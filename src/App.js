@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import NavBar from "./components/NavBar";
+import AuthPage from "./pages/AuthPage";
+import PostList from "./pages/PostList";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path="/*" element={<h3>존재하지 않는 페이지</h3>} />
+          <Route path="/" element={<PostList />} />
+          <Route path="/signin" element={<AuthPage pageName="로그인" />} />
+          <Route path="/signup" element={<AuthPage pageName="회원가입" />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
