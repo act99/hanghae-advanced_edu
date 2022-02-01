@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
 import { Input, Text, Button } from "../elements";
 import { createCookie, getCookie, setCookie } from "../shared/Cookie";
 
 const AuthCompo = (props) => {
-  const navigate = useNavigate();
+  const params = useParams();
+  console.log(params);
   console.log(getCookie("USER_ID"));
   const inputRef = React.useRef([]);
   const loginHandler = (e) => {
@@ -14,7 +15,6 @@ const AuthCompo = (props) => {
     e.preventDefault();
     console.log(inputRef.current[1].value);
     console.log(inputRef.current[2].value);
-    navigate("/");
   };
   const registerHandler = (e) => {
     e.preventDefault();

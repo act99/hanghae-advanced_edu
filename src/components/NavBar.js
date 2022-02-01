@@ -1,15 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../elements/Button";
 import { deleteCookie, getCookie } from "../shared/Cookie";
 
 const NavBar = (props) => {
   const [isLogin, setIsLogin] = React.useState(false);
-  const navigate = useNavigate();
   const logOut = () => {
     deleteCookie("USER_ID");
-    navigate("/");
   };
 
   React.useEffect(() => {
