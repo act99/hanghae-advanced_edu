@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React from "react";
-const Input = (props) => {
+import React, { forwardRef } from "react";
+const Input = forwardRef((props, ref) => {
   const { padding, placeholder, width, height, label, placeholderColor } =
     props;
   const styles = { padding, width, height, placeholder, placeholderColor };
@@ -8,10 +8,10 @@ const Input = (props) => {
   return (
     <>
       {props.label ? <Label>{label}</Label> : null}
-      <InputTile {...styles} />
+      <InputTile {...styles} ref={ref} />
     </>
   );
-};
+});
 
 Input.defaultProps = {
   width: "100%",
