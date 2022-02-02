@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import React, { forwardRef } from "react";
 const Input = forwardRef((props, ref) => {
-  const { padding, placeholder, width, height, label, placeholderColor } =
+  const { padding, placeholder, width, height, label, placeholderColor, type } =
     props;
   const styles = { padding, width, height, placeholder, placeholderColor };
 
   return (
     <>
       {props.label ? <Label>{label}</Label> : null}
-      <InputTile {...styles} ref={ref} />
+      <InputTile {...styles} ref={ref} type={type} />
     </>
   );
 });
@@ -20,6 +20,7 @@ Input.defaultProps = {
   placeholder: "텍스트를 입력하세요",
   placeholderColor: "gray",
   label: "",
+  type: "text",
 };
 
 const InputTile = styled.input`

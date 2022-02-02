@@ -1,17 +1,25 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { deleteCookie, setCookie } from "../../shared/Cookie";
-
+import { auth } from "../../shared/firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 // actions
 const LOG_IN = "LOG_IN";
 const LOG_OUT = "LOG_OUT";
 const GET_USER = "GET_USER";
+const SET_USER = "SET_USER";
 
 // action creators
-const logIn = createAction(LOG_IN, (user) => ({ user }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
-
+const setUser = createAction(SET_USER, (user) => ({ user }));
 // initialState
 const initialState = {
   user: null,
@@ -19,11 +27,71 @@ const initialState = {
 };
 
 // middleware actions
-const loginAction = (user) => {
+
+const loginFB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
-    console.log(history);
-    dispatch(logIn(user));
-    history.push("/");
+    const auth = getAuth();
+    // 세션에 인증 지속 추가
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(auth, id, pwd)
+          .then((userCredential) => {
+            // Signed in
+            console.log("로그인 완료");
+            console.log(userCredential);
+            const user = userCredential.user;
+            dispatch(
+              setUser({
+                user_name: user.displayName,
+                id: id,
+                user_profile: "",
+              })
+            );
+            history.push("/");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+
+    // 로그인
+  };
+};
+
+const signupFB = (id, pwd, name) => {
+  return function (dispatch, getState, { history }) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, id, pwd)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // ..
+      });
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    })
+      .then(() => {
+        dispatch(setUser({ user_name: name, id: id, user_profile: "" }));
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log(error.code, error.message);
+      });
   };
 };
 
@@ -31,7 +99,7 @@ const loginAction = (user) => {
 // draft = state의 복제품 (불변성 유지)
 export default handleActions(
   {
-    [LOG_IN]: (state, action) =>
+    [SET_USER]: (state, action) =>
       produce(state, (draft) => {
         setCookie("is_login", "success");
         draft.user = action.payload.user;
@@ -51,10 +119,10 @@ export default handleActions(
 // action creator export
 
 const actionCreators = {
-  logIn,
   logOut,
   getUser,
-  loginAction,
+  signupFB,
+  loginFB,
 };
 
 export { actionCreators };

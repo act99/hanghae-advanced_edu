@@ -14,17 +14,34 @@ const AuthCompo = (props) => {
   const inputRef = React.useRef([]);
   const loginHandler = (e) => {
     e.preventDefault();
-    dispatch(userActions.loginAction({ user_name: "perl" }));
-    // setCookie("USER_ID", inputRef.current[1].value, 3);
-    // setCookie("USER_PWD", inputRef.current[2].value, 3);
-    // e.preventDefault();
+    console.log(inputRef.current[1].value, inputRef.current[2].value);
+    if (inputRef.current[1].value === "" || inputRef.current[2].value === "") {
+      alert("아이디 또는 비밀번호가 공란입니다.");
+    } else {
+      dispatch(
+        userActions.loginFB(
+          inputRef.current[1].value,
+          inputRef.current[2].value
+        )
+      );
+    }
   };
   const registerHandler = (e) => {
     e.preventDefault();
-    console.log(inputRef.current[1].value);
-    console.log(inputRef.current[2].value);
-    console.log(inputRef.current[3].value);
-    console.log(inputRef.current[4].value);
+    const signup = () => {
+      dispatch(
+        userActions.signupFB(
+          inputRef.current[1].value,
+          inputRef.current[3].value,
+          inputRef.current[2].value
+        )
+      );
+    };
+    if (inputRef.current[3].value === inputRef.current[4].value) {
+      signup();
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
   };
   if (props.pageName === "로그인") {
     return (
@@ -34,11 +51,19 @@ const AuthCompo = (props) => {
             {props.pageName}
           </Text>
           <WrappingInput>
-            <Input label="아이디" ref={(el) => (inputRef.current[1] = el)} />
+            <Input
+              label="이메일"
+              ref={(el) => (inputRef.current[1] = el)}
+              type="email"
+            />
           </WrappingInput>
 
           <WrappingInput>
-            <Input label="비밀번호" ref={(el) => (inputRef.current[2] = el)} />
+            <Input
+              label="비밀번호"
+              ref={(el) => (inputRef.current[2] = el)}
+              type="password"
+            />
           </WrappingInput>
           <Button
             type="submit"
@@ -59,18 +84,27 @@ const AuthCompo = (props) => {
           {props.pageName}
         </Text>
         <WrappingInput>
-          <Input label="아이디" ref={(el) => (inputRef.current[1] = el)} />
+          <Input
+            label="아이디"
+            ref={(el) => (inputRef.current[1] = el)}
+            type="email"
+          />
         </WrappingInput>
         <WrappingInput>
           <Input label="닉네임" ref={(el) => (inputRef.current[2] = el)} />
         </WrappingInput>
         <WrappingInput>
-          <Input label="비밀번호" ref={(el) => (inputRef.current[3] = el)} />
+          <Input
+            label="비밀번호"
+            ref={(el) => (inputRef.current[3] = el)}
+            type="password"
+          />
         </WrappingInput>
         <WrappingInput>
           <Input
             label="비밀번호 확인"
             ref={(el) => (inputRef.current[4] = el)}
+            type="password"
           />
         </WrappingInput>
         <Button type="submit" width="100%" margin="30px 0px 0px 0px">
