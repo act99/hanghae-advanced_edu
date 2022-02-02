@@ -3,23 +3,19 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../elements/Button";
 import { deleteCookie, getCookie } from "../shared/Cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as userActions } from "../app/services/loginReducer";
 
 const NavBar = (props) => {
-  const [isLogin, setIsLogin] = React.useState(false);
+  const dispatch = useDispatch();
+  const is_login = useSelector((state) => state.user.is_login);
+  console.log(is_login);
+
   const logOut = () => {
-    deleteCookie("USER_ID");
+    dispatch(userActions.logOut({}));
   };
 
-  React.useEffect(() => {
-    let cookie = getCookie("USER_ID");
-    if (cookie) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, []);
-
-  if (isLogin === true) {
+  if (is_login === true) {
     return (
       <Wrap>
         <div>

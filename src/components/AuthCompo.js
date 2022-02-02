@@ -3,18 +3,21 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
 import { Input, Text, Button } from "../elements";
 import { createCookie, getCookie, setCookie } from "../shared/Cookie";
+import { useDispatch } from "react-redux";
+import { actionCreators as userActions } from "../app/services/loginReducer";
 
 const AuthCompo = (props) => {
+  const dispatch = useDispatch();
   const params = useParams();
   console.log(params);
   console.log(getCookie("USER_ID"));
   const inputRef = React.useRef([]);
   const loginHandler = (e) => {
-    setCookie("USER_ID", inputRef.current[1].value, 3);
-    setCookie("USER_PWD", inputRef.current[2].value, 3);
     e.preventDefault();
-    console.log(inputRef.current[1].value);
-    console.log(inputRef.current[2].value);
+    dispatch(userActions.loginAction({ user_name: "perl" }));
+    // setCookie("USER_ID", inputRef.current[1].value, 3);
+    // setCookie("USER_PWD", inputRef.current[2].value, 3);
+    // e.preventDefault();
   };
   const registerHandler = (e) => {
     e.preventDefault();
@@ -37,7 +40,12 @@ const AuthCompo = (props) => {
           <WrappingInput>
             <Input label="비밀번호" ref={(el) => (inputRef.current[2] = el)} />
           </WrappingInput>
-          <Button type="submit" width="100%" margin="30px 0px 0px 0px">
+          <Button
+            type="submit"
+            width="100%"
+            margin="30px 0px 0px 0px"
+            // onClick={loginHandler}
+          >
             {props.pageName}하기
           </Button>
         </form>

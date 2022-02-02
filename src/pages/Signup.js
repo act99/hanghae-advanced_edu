@@ -1,12 +1,11 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import AuthCompo from "../components/AuthCompo";
 
-const AuthPage = (props) => {
+const Signup = () => {
   return (
     <Wrap>
-      <AuthCompo pageName={props.pageName} />
+      <AuthCompo pageName="회원가입" />
     </Wrap>
   );
 };
@@ -19,4 +18,4 @@ const Wrap = styled.div`
   margin-top: 50px;
   padding: 30px;
 `;
-export default AuthPage;
+export default Signup;
