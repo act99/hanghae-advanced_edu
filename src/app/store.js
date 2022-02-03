@@ -3,12 +3,16 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import loginReducer from "./services/loginReducer";
 import { connectRouter } from "connected-react-router";
+import Post from "./services/postReducer";
+import Image from "./services/imageReducer";
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   user: loginReducer,
   router: connectRouter(history),
+  post: Post,
+  image: Image,
 });
 
 const middlewares = [thunk.withExtraArgument({ history: history })];

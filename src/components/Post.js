@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { Grid, Image, Text } from "../elements";
 
@@ -15,15 +16,13 @@ const Post = (props) => {
           <Text>{props.contents}</Text>
         </Grid>
         <Grid>
-          <Image shape="rectangle" src={props.src} />
+          <Link to="/detail">
+            <Image shape="rectangle" src={props.src} />
+          </Link>
         </Grid>
         <Grid padding="16px">
           <Text bold>{props.comment_cnt}개</Text>
         </Grid>
-        <div>user profile / user name / inser_dt</div>
-        <div>contents</div>
-        <div>img</div>
-        <div>comment cnt</div>
       </Grid>
     </>
   );

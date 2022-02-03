@@ -9,9 +9,9 @@ import {
   signInWithEmailAndPassword,
   setPersistence,
   browserSessionPersistence,
+  signOut,
 } from "firebase/auth";
 // actions
-const LOG_IN = "LOG_IN";
 const LOG_OUT = "LOG_OUT";
 const GET_USER = "GET_USER";
 const SET_USER = "SET_USER";
@@ -45,6 +45,7 @@ const loginFB = (id, pwd) => {
                 user_name: user.displayName,
                 id: id,
                 user_profile: "",
+                uid: user.uid,
               })
             );
             history.push("/");
@@ -61,8 +62,27 @@ const loginFB = (id, pwd) => {
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
       });
+  };
+};
 
-    // 로그인
+// 로그인
+
+const loginCheckFB = () => {
+  return function (dispatch, getState, { history }) {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(
+          setUser({
+            user_name: user.displayName,
+            user_profile: "",
+            id: user.email,
+            uid: user.uid,
+          })
+        );
+      } else {
+        dispatch(logOut());
+      }
+    });
   };
 };
 
@@ -73,7 +93,27 @@ const signupFB = (id, pwd, name) => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        })
+          .then(() => {
+            dispatch(
+              setUser({
+                user_name: name,
+                id: id,
+                user_profile: "",
+                uid: user.uid,
+              })
+            );
+            history.push("/");
+          })
+          .catch((error) => {
+            console.log(error.code, error.message);
+          });
+
         console.log(user);
+        history.push("/");
         // ...
       })
       .catch((error) => {
@@ -82,15 +122,22 @@ const signupFB = (id, pwd, name) => {
         console.log(errorCode, errorMessage);
         // ..
       });
-    updateProfile(auth.currentUser, {
-      displayName: name,
-    })
+  };
+};
+
+// 로그아웃
+
+const logoutFB = () => {
+  return function (dispatch, getState, { history }) {
+    const auth = getAuth();
+    signOut(auth)
       .then(() => {
-        dispatch(setUser({ user_name: name, id: id, user_profile: "" }));
-        history.push("/");
+        dispatch(logOut());
+        history.replace("/");
+        console.log("로그아웃");
       })
       .catch((error) => {
-        console.log(error.code, error.message);
+        console.log(error.code, error.errorMessage);
       });
   };
 };
@@ -123,6 +170,8 @@ const actionCreators = {
   getUser,
   signupFB,
   loginFB,
+  loginCheckFB,
+  logoutFB,
 };
 
 export { actionCreators };

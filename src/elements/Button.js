@@ -37,6 +37,7 @@ const Btn = styled.button`
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.color};
   margin: ${(props) => props.margin};
+  margin-right: 50;
   padding: ${(props) => props.padding};
   border: ${(props) => props.border};
 

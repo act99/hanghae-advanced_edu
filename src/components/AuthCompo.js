@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
 import { Input, Text, Button } from "../elements";
-import { createCookie, getCookie, setCookie } from "../shared/Cookie";
+import { getCookie } from "../shared/Cookie";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../app/services/loginReducer";
 
@@ -12,6 +12,8 @@ const AuthCompo = (props) => {
   console.log(params);
   console.log(getCookie("USER_ID"));
   const inputRef = React.useRef([]);
+  console.log(inputRef.current);
+
   const loginHandler = (e) => {
     e.preventDefault();
     console.log(inputRef.current[1].value, inputRef.current[2].value);

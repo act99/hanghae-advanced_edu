@@ -2,20 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../elements/Button";
-import { deleteCookie, getCookie } from "../shared/Cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../app/services/loginReducer";
+import { apiKey } from "../shared/firebase";
 
 const NavBar = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
-  console.log(is_login);
+  const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
 
   const logOut = () => {
-    dispatch(userActions.logOut({}));
+    dispatch(userActions.logoutFB());
   };
+  const is_session = sessionStorage.getItem(_session_key) ? true : false;
 
-  if (is_login === true) {
+  if (is_login === true && is_session === true) {
     return (
       <Wrap>
         <div>
