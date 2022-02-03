@@ -11,6 +11,7 @@ const AddCompo = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [contents, setContents] = React.useState("");
+  const preview = useSelector((state) => state.image.preview);
   const changeContents = (e) => {
     setContents(e.target.value);
     console.log(contents);
@@ -47,7 +48,10 @@ const AddCompo = (props) => {
           </Text>
         </Grid>
         <Grid>
-          <Image shape="rectangle" src={props.src} />
+          <Image
+            shape="rectangle"
+            src={preview ? preview : "https://via.placeholder.com/400x300"}
+          />
         </Grid>
         <Grid padding="16px">
           <Text>게시글 내용</Text>

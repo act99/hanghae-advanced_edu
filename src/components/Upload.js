@@ -13,6 +13,10 @@ const Upload = (props) => {
     console.log(fileInput.current.files[0]);
     const reader = new FileReader();
     const file = fileInput.current.files[0];
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      dispatch(imageActions.setPreview(reader.result));
+    };
   };
   const uploadFB = () => {
     let image = fileInput.current.files[0];
