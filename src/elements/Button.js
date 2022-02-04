@@ -13,6 +13,7 @@ const Button = (props) => {
     padding,
     border,
     type,
+    disabled,
   } = props;
   const styles = {
     width,
@@ -25,7 +26,7 @@ const Button = (props) => {
     type,
   };
   return (
-    <Btn {...styles} onClick={onClick} type={type}>
+    <Btn {...styles} onClick={onClick} type={type} disabled={disabled}>
       {children}
     </Btn>
   );

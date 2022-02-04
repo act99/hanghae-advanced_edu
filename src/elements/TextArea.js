@@ -13,7 +13,7 @@ const TextArea = (props) => {
 
 const TextAreaBox = styled.textarea`
   display: block;
-  margin: auto;
+  margin: ${(props) => (props.margin ? props.margin : "auto")};
   border: solid 1px;
   width: ${(props) => props.width};
   height: ${(props) => props.height};

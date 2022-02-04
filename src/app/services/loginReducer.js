@@ -54,6 +54,7 @@ const loginFB = (id, pwd) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
+            alert("비밀번호 또는 이메일 형식이 옳지 않습니다.");
           });
       })
       .catch((error) => {
@@ -120,6 +121,7 @@ const signupFB = (id, pwd, name) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        alert("비밀번호를 6자리 이상 입력해주세요!");
         // ..
       });
   };

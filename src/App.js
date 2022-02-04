@@ -15,7 +15,8 @@ import AddBtn from "./components/AddBtn";
 import Permit from "./shared/Permit";
 import AddPost from "./pages/AddPost";
 import Detail from "./pages/Detail";
-
+import Search from "./shared/Search";
+import styled from "styled-components";
 function App() {
   const dispatch = useDispatch();
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
@@ -28,20 +29,30 @@ function App() {
   return (
     <>
       <ConnectedRouter history={history}>
-        <NavBar />
-        <Route path="/" exact component={PostList} />
-        <Route path="/signin" exact component={Signin} />
-        <Route path="/signup" exact component={Signup} />
-        <Route path="/profile" exact component={Profile} />
-        <Route path="/addpost" exact component={AddPost} />
-        <Route path="/detail" exact component={Detail} />
-        <Permit>
-          <AddBtn />
-        </Permit>
+        <Wrap>
+          <NavBar />
+
+          <Route path="/" exact component={PostList} />
+          <Route path="/signin" exact component={Signin} />
+          <Route path="/signup" exact component={Signup} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/addpost" exact component={AddPost} />
+          <Route path="/detail" exact component={Detail} />
+          <Route path="/search" exact component={Search} />
+
+          <Permit>
+            <AddBtn />
+          </Permit>
+        </Wrap>
         {/* {is_session === true ? <AddBtn /> : null} */}
       </ConnectedRouter>
     </>
   );
 }
+
+const Wrap = styled.div`
+  max-width: 768px;
+  margin: auto;
+`;
 
 export default App;

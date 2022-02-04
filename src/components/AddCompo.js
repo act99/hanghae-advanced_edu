@@ -1,13 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Button, Grid, Image, Input, Text } from "../elements";
+import { Button, Grid, Image, Input, RowGrid, Text } from "../elements";
 import TextArea from "../elements/TextArea";
 import Upload from "./Upload";
 import { actionCreators as postActions } from "../app/services/postReducer";
+import styled from "styled-components";
 
 const AddCompo = (props) => {
   const is_login = useSelector((state) => state.user.is_login);
+  const [layout, setLayout] = React.useState("center");
   const history = useHistory();
   const dispatch = useDispatch();
   const [contents, setContents] = React.useState("");
@@ -15,6 +17,11 @@ const AddCompo = (props) => {
   const changeContents = (e) => {
     setContents(e.target.value);
     console.log(contents);
+  };
+
+  console.log(layout);
+  const handleLayout = (e) => {
+    setLayout(e.target.value);
   };
   const addPost = () => {
     dispatch(postActions.addPostFB(contents));
@@ -41,33 +48,116 @@ const AddCompo = (props) => {
             게시글 작성
           </Text>
         </Grid>
-        <Upload />
-        <Grid padding="16px">
-          <Text bold size="16px">
-            미리보기
+        <WrapSelect>
+          <Text bold size="16px" margin="15px">
+            레이아웃을 선택해주세요 :)
           </Text>
-        </Grid>
-        <Grid>
-          <Image
-            shape="rectangle"
-            src={preview ? preview : "https://via.placeholder.com/400x300"}
-          />
-        </Grid>
-        <Grid padding="16px">
-          <Text>게시글 내용</Text>
-          <TextArea onChange={changeContents} />
-        </Grid>
+          <Select onChange={handleLayout}>
+            <option value="right">오른쪽</option>
+            <option value="left">왼쪽</option>
+            <option value="center">중앙</option>
+          </Select>
+        </WrapSelect>
+        <Upload />
+        {layout === "center" ? (
+          <>
+            <Grid padding="16px" is_flex>
+              <Text bold size="16px">
+                미리보기
+              </Text>
+              <Image
+                shape="rectangle"
+                src={preview ? preview : "https://via.placeholder.com/400x300"}
+              />
+            </Grid>
+            <Grid padding="16px">
+              <Text>게시글 내용</Text>
+              <TextArea onChange={changeContents} />
+            </Grid>
+          </>
+        ) : layout === "right" ? (
+          <>
+            <RowGrid padding="16px" is_flex>
+              <Grid>
+                <Text bold size="16px">
+                  게시글 내용
+                </Text>
+                <TextArea
+                  onChange={changeContents}
+                  width="300px"
+                  height="220px"
+                  margin="0px"
+                />
+              </Grid>
+              <Grid>
+                <Text bold size="16px">
+                  미리보기
+                </Text>
+                <Image
+                  row
+                  shape="rectangle"
+                  src={
+                    preview ? preview : "https://via.placeholder.com/400x300"
+                  }
+                />
+              </Grid>
+            </RowGrid>
+          </>
+        ) : (
+          <>
+            <RowGrid padding="16px" is_flex>
+              <Grid>
+                <Text bold size="16px">
+                  미리보기
+                </Text>
+                <Image
+                  row
+                  shape="rectangle"
+                  src={
+                    preview ? preview : "https://via.placeholder.com/400x300"
+                  }
+                />
+              </Grid>
+              <Grid>
+                <Text bold size="16px">
+                  게시글 내용
+                </Text>
+                <TextArea
+                  onChange={changeContents}
+                  width="300px"
+                  height="220px"
+                  margin="0px"
+                />
+              </Grid>
+            </RowGrid>
+          </>
+        )}
 
         <Grid is_flex>
-          <Button
-            width="100%"
-            margin="10px"
-            padding="10px"
-            height="50px"
-            onClick={addPost}
-          >
-            게시글 작성
-          </Button>
+          {contents === "" || preview === null ? (
+            <Button
+              width="100%"
+              margin="10px"
+              padding="10px"
+              height="50px"
+              onClick={addPost}
+              disabled={true}
+              backgroundColor="gray"
+            >
+              게시물을 입력해주세요.
+            </Button>
+          ) : (
+            <Button
+              width="100%"
+              margin="10px"
+              padding="10px"
+              height="50px"
+              onClick={addPost}
+              disabled={false}
+            >
+              게시글 작성
+            </Button>
+          )}
         </Grid>
       </Grid>
     </>
@@ -77,5 +167,18 @@ const AddCompo = (props) => {
 AddCompo.defaultProps = {
   contents: "고양이네요",
 };
+
+const WrapSelect = styled.div`
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const Select = styled.select`
+  width: 200px;
+  height: 50px;
+`;
 
 export default AddCompo;

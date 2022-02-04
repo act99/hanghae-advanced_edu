@@ -2,15 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { shape, src, size } = props;
+  const { shape, src, size, row } = props;
   const styles = { src, size };
-
+  const outerStyle = { row };
   if (shape === "circle") {
     return <ImageCircle {...styles}></ImageCircle>;
   }
   if (shape === "rectangle") {
     return (
-      <AspectOutter>
+      <AspectOutter {...outerStyle}>
         <AspectInner {...styles} />
       </AspectOutter>
     );
@@ -29,8 +29,9 @@ const ImageCircle = styled.div`
 `;
 
 const AspectOutter = styled.div`
-  width: 100%;
-  min-width: 250px;
+  /* width: 100%; */
+  ${(props) => (props.row ? "width: 300px;" : "width: 100%;")}
+  min-width: 200px;
 `;
 
 const AspectInner = styled.div`

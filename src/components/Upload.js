@@ -3,6 +3,7 @@ import { Button } from "../elements";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as imageActions } from "../app/services/imageReducer";
+import styled from "styled-components";
 
 const Upload = (props) => {
   const is_uploading = useSelector((state) => state.image.uploading);
@@ -24,15 +25,26 @@ const Upload = (props) => {
   };
   return (
     <React.Fragment>
-      <input
-        type="file"
-        onChange={selectFile}
-        ref={fileInput}
-        disabled={is_uploading}
-      />
-      <Button onClick={uploadFB}>업로드하기</Button>
+      <Wrap>
+        <input
+          style={{ margin: "15px" }}
+          type="file"
+          onChange={selectFile}
+          ref={fileInput}
+          disabled={is_uploading}
+        />
+        <Button onClick={uploadFB}>업로드하기</Button>
+      </Wrap>
     </React.Fragment>
   );
 };
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  justify-items: center;
+  padding: 20px;
+`;
 
 export default Upload;
