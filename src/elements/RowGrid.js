@@ -28,20 +28,16 @@ RowGrid.defaultProps = {
 };
 
 const GridBox = styled.div`
+  margin: ${(props) => (props.margin ? props.margin : "")};
   width: ${(props) => props.width};
   height: 100%;
-  margin: 10px;
-  /* padding: ${(props) => (props.padding ? `${props.padding}` : "")};
-  margin: ${(props) => (props.margin ? `${props.margin}` : "")};
-  background-color: ${(props) =>
-    props.bg ? `background-color: ${props.bg}` : ""}; */
+  padding: ${(props) => props.padding};
+  /* margin: 50px; */
+
   display: flex;
   flex-direction: row;
-
-  /* display: ${(props) =>
-    props.is_flex
-      ? "display : flex;  align-items: center; justify-content : space-between; flex-direction: row;"
-      : ""}; */
+  justify-content: center;
+  justify-items: center;
 `;
 
 export default RowGrid;

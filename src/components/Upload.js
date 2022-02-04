@@ -9,6 +9,7 @@ const Upload = (props) => {
   const is_uploading = useSelector((state) => state.image.uploading);
   const dispatch = useDispatch();
   const fileInput = React.useRef();
+  const [upload, setUpload] = React.useState(false);
   const selectFile = (e) => {
     console.log(e.target.files);
     console.log(fileInput.current.files[0]);
@@ -18,6 +19,7 @@ const Upload = (props) => {
     reader.onloadend = () => {
       dispatch(imageActions.setPreview(reader.result));
     };
+    setUpload(true);
   };
   const uploadFB = () => {
     let image = fileInput.current.files[0];
@@ -33,7 +35,19 @@ const Upload = (props) => {
           ref={fileInput}
           disabled={is_uploading}
         />
-        <Button onClick={uploadFB}>업로드하기</Button>
+        {upload === false ? (
+          <Button
+            width="160px"
+            backgroundColor="gray"
+            onClick={() => alert("파일을 선택해주세요!")}
+          >
+            파일을 선택해주세요
+          </Button>
+        ) : (
+          <Button width="160px" onClick={uploadFB}>
+            업로드하기
+          </Button>
+        )}
       </Wrap>
     </React.Fragment>
   );

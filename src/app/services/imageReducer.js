@@ -21,6 +21,7 @@ const uploadImageFB = (image) => {
   return function (dispatch, getState, { history }) {
     dispatch(uploading(true));
     const storage = getStorage();
+
     const storageRef = ref(storage, `images/${image.name}`);
     uploadBytes(storageRef, image).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {

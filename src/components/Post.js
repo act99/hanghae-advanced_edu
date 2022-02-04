@@ -1,29 +1,102 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-import { Grid, Image, Text } from "../elements";
+import { Button, Grid, Image, RowGrid, Text } from "../elements";
 
 const Post = (props) => {
+  const history = useHistory();
   return (
     <>
-      <Grid>
-        <Grid is_flex>
-          <Image shape="circle" src={props.src} />
-          <Text bold>{props.user_info.user_name}</Text>
-          <Text>{props.insert_dt}</Text>
-        </Grid>
-        <Grid padding="16px">
-          <Text>{props.contents}</Text>
-        </Grid>
+      {props.layout === "center" ? (
         <Grid>
-          <Link to="/detail">
-            <Image shape="rectangle" src={props.image_url} />
-          </Link>
+          <RowGrid>
+            <Grid is_flex>
+              <Image shape="circle" src={props.src} />
+              <Text bold>{props.user_info.user_name}</Text>
+              <Text>{props.insert_dt}</Text>
+            </Grid>
+            <Button
+              onClick={() => {
+                history.replace(`/editpost/${props.id}`);
+              }}
+            >
+              수정하기
+            </Button>
+          </RowGrid>
+          <Grid padding="16px">
+            <Text>{props.contents}</Text>
+          </Grid>
+          <Grid>
+            <Link to="/detail">
+              <Image shape="rectangle" src={props.image_url} />
+            </Link>
+          </Grid>
+          <Grid padding="16px">
+            <Text bold>{props.comment_cnt}개</Text>
+          </Grid>
         </Grid>
-        <Grid padding="16px">
-          <Text bold>{props.comment_cnt}개</Text>
+      ) : props.layout === "right" ? (
+        <Grid>
+          <RowGrid>
+            <Grid is_flex>
+              <Image shape="circle" src={props.src} />
+              <Text bold>{props.user_info.user_name}</Text>
+              <Text>{props.insert_dt}</Text>
+            </Grid>
+            <Button
+              onClick={() => {
+                history.replace(`/editpost/${props.id}`);
+              }}
+            >
+              수정하기
+            </Button>
+          </RowGrid>
+          <RowGrid width="100%">
+            <Grid>
+              <Text>{props.contents}</Text>
+            </Grid>
+            <Grid>
+              <Link to="/detail">
+                <Image shape="rectangle" src={props.image_url} />
+              </Link>
+            </Grid>
+          </RowGrid>
+          <Grid>
+            <Text bold>{props.comment_cnt}개</Text>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <Grid>
+          <RowGrid>
+            <Grid is_flex>
+              <Image shape="circle" src={props.src} />
+              <Text bold>{props.user_info.user_name}</Text>
+              <Text>{props.insert_dt}</Text>
+            </Grid>
+            <Button
+              onClick={() => {
+                history.replace(`/editpost/${props.id}`);
+              }}
+            >
+              수정하기
+            </Button>
+          </RowGrid>
+          <RowGrid>
+            <Grid>
+              <Link to="/detail">
+                <Image shape="rectangle" src={props.image_url} />
+              </Link>
+            </Grid>
+            <Grid padding="16px">
+              <Text>{props.contents}</Text>
+            </Grid>
+          </RowGrid>
+          <Grid padding="16px">
+            <Text bold>{props.comment_cnt}개</Text>
+          </Grid>
+        </Grid>
+      )}
     </>
   );
 };

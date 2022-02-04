@@ -17,6 +17,7 @@ import AddPost from "./pages/AddPost";
 import Detail from "./pages/Detail";
 import Search from "./shared/Search";
 import styled from "styled-components";
+import Notification from "./pages/Notification";
 function App() {
   const dispatch = useDispatch();
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
@@ -31,7 +32,6 @@ function App() {
       <ConnectedRouter history={history}>
         <Wrap>
           <NavBar />
-
           <Route path="/" exact component={PostList} />
           <Route path="/signin" exact component={Signin} />
           <Route path="/signup" exact component={Signup} />
@@ -39,7 +39,8 @@ function App() {
           <Route path="/addpost" exact component={AddPost} />
           <Route path="/detail" exact component={Detail} />
           <Route path="/search" exact component={Search} />
-
+          <Route path="/editpost/:id" exact component={AddPost} />
+          <Route path="/notification" exact component={Notification}></Route>
           <Permit>
             <AddBtn />
           </Permit>

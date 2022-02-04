@@ -1,9 +1,10 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { firestore, storage } from "../../shared/firebase";
-import "moment";
+import { db, firestore, storage } from "../../shared/firebase";
+// import "moment"
 import moment from "moment";
 import { actionCreators as imageActions } from "./imageReducer";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
@@ -29,7 +30,7 @@ const initialPost = {
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
 };
 
-const addPostFB = (contents = "") => {
+const addPostFB = (contents = "", layout = "center") => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     const _user = getState().user.user;
@@ -41,6 +42,7 @@ const addPostFB = (contents = "") => {
     const _post = {
       ...initialPost,
       contents: contents,
+      layout: layout,
       insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
     };
     const _image = getState().image.preview;
@@ -76,6 +78,31 @@ const addPostFB = (contents = "") => {
           console.log("앗 이미지 업로드에 문제가 있어요", err);
         });
     });
+  };
+};
+
+const uploadPostFB = (id, contents, layout) => {
+  return async function (dispatch, getState, { history }) {
+    // const postDB = firestore.collection("post");
+    const docRef = doc(db, "post", id);
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data());
+    const data = [...docSnap.data()];
+    const edit = {
+      contents: contents,
+      layout: layout,
+      insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
+    };
+    await setDoc(docRef, {
+      ...data,
+      edit,
+    });
+    // const user_info = {
+    //   user_name: _user.user_name,
+    //   user_id: _user.uid,
+    //   user_profile: _user.user_profile,
+    // };
+    // const _post = {};
   };
 };
 
@@ -142,6 +169,7 @@ const actionCreators = {
   addPost,
   getPostFB,
   addPostFB,
+  uploadPostFB,
 };
 
 export { actionCreators };

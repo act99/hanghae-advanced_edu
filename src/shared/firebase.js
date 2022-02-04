@@ -2,6 +2,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_apiKey,
   authDomain: process.env.REACT_APP_authDomain,
@@ -17,4 +18,5 @@ const apiKey = firebaseConfig.apiKey;
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
-export { auth, apiKey, firestore, storage };
+const db = getFirestore();
+export { auth, apiKey, firestore, storage, db };

@@ -4,37 +4,42 @@ import styled from "styled-components";
 import Button from "../elements/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../app/services/loginReducer";
+import { actionCreators as imageActions } from "../app/services/imageReducer";
 import { apiKey } from "../shared/firebase";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const NavBar = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const is_login = useSelector((state) => state.user.is_login);
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
-
   const logOut = () => {
     dispatch(userActions.logoutFB());
   };
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
 
+  const goBack = () => {
+    history.replace("/");
+    dispatch(imageActions.setPreview(null));
+  };
+
   if (is_login === true && is_session === true) {
     return (
       <Wrap>
         <div>
-          <Link to="/profile">
-            <Button
-              backgroundColor="gray"
-              color="black"
-              width="40px"
-              height="40px"
-            ></Button>
-          </Link>
+          <Button backgroundColor="gray" color="black" onClick={goBack}>
+            Instagram?
+          </Button>
         </div>
         <div>
-          <Link to="/signup">
+          <Link to="/profile">
             <Button backgroundColor="gray" color="black">
-              알림
+              프로필
             </Button>
           </Link>
+          <Button backgroundColor="gray" color="black">
+            알림
+          </Button>
           <Button backgroundColor="gray" color="black" onClick={logOut}>
             로그아웃
           </Button>
@@ -46,14 +51,13 @@ const NavBar = (props) => {
   return (
     <Wrap>
       <div>
-        <Link to="/profile">
-          <Button
-            backgroundColor="gray"
-            color="black"
-            width="40px"
-            height="40px"
-          ></Button>
-        </Link>
+        <Button
+          backgroundColor="gray"
+          color="black"
+          onClick={() => history.replace("/")}
+        >
+          Instagram?
+        </Button>
       </div>
       <div>
         <Link to="/signup">
