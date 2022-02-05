@@ -33,6 +33,7 @@ const GridBox = styled.div`
   height: 100%;
   padding: ${(props) => props.padding};
   /* margin: 50px; */
+  background-color: ${(props) => props.bg};
 
   display: flex;
   flex-direction: row;

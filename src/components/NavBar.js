@@ -37,9 +37,11 @@ const NavBar = (props) => {
               프로필
             </Button>
           </Link>
-          <Button backgroundColor="gray" color="black">
-            알림
-          </Button>
+          <Link to="/notification">
+            <Button backgroundColor="gray" color="black">
+              알림
+            </Button>
+          </Link>
           <Button backgroundColor="gray" color="black" onClick={logOut}>
             로그아웃
           </Button>

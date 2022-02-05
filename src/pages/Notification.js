@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Image, RowGrid, Text } from "../elements";
+import styled from "styled-components";
+import Card from "../components/Card";
 
 const Notification = (props) => {
   const noti = [
@@ -26,30 +27,21 @@ const Notification = (props) => {
   ];
   return (
     <>
-      <Grid padding="16px" bg="gray">
+      <Wrap>
         {noti.map((item, index) => {
-          return (
-            <RowGrid
-              padding="16px"
-              is_flex
-              bg="#ffffff"
-              key={item.id}
-              margin="20px"
-            >
-              <Grid width="auto" margin="0px 8px 0px 0px">
-                <Image />
-              </Grid>
-              <Grid>
-                <Text margin="10px 0px">
-                  <b>{item.user_name}</b> 님이 게시글에 댓글을 남겼습니다.
-                </Text>
-              </Grid>
-            </RowGrid>
-          );
+          return <Card props={item} />;
         })}
-      </Grid>
+      </Wrap>
     </>
   );
 };
+
+const Wrap = styled.div`
+  height: 100%;
+  padding: 20px;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+`;
 
 export default Notification;

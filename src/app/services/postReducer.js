@@ -17,17 +17,18 @@ const initialState = {
 };
 
 const initialPost = {
-  //   id: 0,
-  //   user_info: {
-  //     user_name: "Jooseok",
-  //     user_profile:
-  //       "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-  //   },
+  id: 0,
+  user_info: {
+    user_name: "Jooseok",
+    user_profile:
+      "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  },
   image_url:
     "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   contents: "고양이네요",
   comment_cnt: 0,
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
+  layout: "center",
 };
 
 const addPostFB = (contents = "", layout = "center") => {
