@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Grid, Image, Input, RowGrid, Text } from "../elements";
@@ -8,34 +8,62 @@ import { actionCreators as postActions } from "../app/services/postReducer";
 import { actionCreators as imageActions } from "../app/services/imageReducer";
 import styled from "styled-components";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../shared/firebase";
 
 const AddCompo = (props) => {
   const params = useParams();
-  console.log(params.id);
   const is_login = useSelector((state) => state.user.is_login);
   const [layout, setLayout] = React.useState("center");
   const history = useHistory();
   const dispatch = useDispatch();
   const [contents, setContents] = React.useState("");
   const preview = useSelector((state) => state.image.preview);
+  const postList = useSelector((state) => state.post.list);
   const changeContents = (e) => {
     setContents(e.target.value);
-    console.log(contents);
   };
+  const [dataLoading, setDataLoading] = React.useState(false);
 
-  console.log(layout);
   const handleLayout = (e) => {
     setLayout(e.target.value);
   };
   const addPost = () => {
     dispatch(postActions.addPostFB(contents, layout));
   };
+  const editPost = () => {
+    dispatch(
+      postActions.updatePostFB(params.id, {
+        contents: contents,
+        layout: layout,
+      })
+    );
+  };
+  const dataRef = React.useRef(null);
+  console.log(params);
   React.useEffect(() => {
+    if (params.id) {
+      const docRef = doc(db, "post", params.id);
+      const gettingDoc = async () => {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log(docSnap.data());
+          dataRef.current = { ...docSnap.data() };
+          // dispatch(postActions.setPost(postList));
+          setDataLoading(true);
+          setContents(dataRef.current.contents);
+          dispatch(imageActions.setPreview(dataRef.current.image_url));
+        } else {
+          console.log("data none");
+        }
+      };
+      gettingDoc();
+    }
     // if (params.id !== undefined) {
     //   dispatch(postActions.uploadPostFB(params.id, contents, layout));
     // }
   }, []);
-
+  console.log(dataRef.current);
   if (!is_login) {
     return (
       <Grid margin="100px 0px" padding="16px" center>
@@ -50,7 +78,7 @@ const AddCompo = (props) => {
     );
   }
 
-  if (params.id !== undefined) {
+  if (params.id !== undefined && dataLoading === true) {
     return (
       <>
         <Grid>
@@ -80,12 +108,13 @@ const AddCompo = (props) => {
                   shape="rectangle"
                   src={
                     preview ? preview : "https://via.placeholder.com/400x300"
+                    // preview ? preview : "https://via.placeholder.com/400x300"
                   }
                 />
               </Grid>
               <Grid padding="16px">
                 <Text>게시글 내용</Text>
-                <TextArea onChange={changeContents} />
+                <TextArea onChange={changeContents} editValue={contents} />
               </Grid>
             </>
           ) : layout === "right" ? (
@@ -100,6 +129,7 @@ const AddCompo = (props) => {
                     width="300px"
                     height="220px"
                     margin="0px"
+                    editValue={contents}
                   />
                 </Grid>
                 <Grid>
@@ -140,6 +170,7 @@ const AddCompo = (props) => {
                     width="300px"
                     height="220px"
                     margin="0px"
+                    editValue={contents}
                   />
                 </Grid>
               </RowGrid>
@@ -165,10 +196,10 @@ const AddCompo = (props) => {
                 margin="10px"
                 padding="10px"
                 height="50px"
-                onClick={addPost}
+                onClick={editPost}
                 disabled={false}
               >
-                게시글 작성
+                게시글 수정
               </Button>
             )}
           </Grid>

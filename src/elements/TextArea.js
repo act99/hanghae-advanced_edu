@@ -1,12 +1,25 @@
 import styled from "styled-components";
 
 const TextArea = (props) => {
-  const { display, margin, border, width, height, placeholder, onChange } =
-    props;
+  const {
+    display,
+    margin,
+    border,
+    width,
+    height,
+    placeholder,
+    onChange,
+    editValue,
+  } = props;
   const styles = { display, margin, border, width, height };
   return (
     <>
-      <TextAreaBox {...styles} placeholder={placeholder} onChange={onChange} />
+      <TextAreaBox
+        {...styles}
+        placeholder={placeholder}
+        onChange={onChange}
+        defaultValue={editValue}
+      />
     </>
   );
 };
@@ -28,6 +41,7 @@ TextArea.defaultProps = {
   placeholderColor: "gray",
   label: "",
   type: "text",
+  editValue: "",
 };
 
 export default TextArea;

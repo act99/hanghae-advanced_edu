@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const RowGrid = (props) => {
-  const { is_flex, width, margin, padding, bg, children, center } = props;
+  const { is_flex, width, margin, padding, bg, children, center, jc } = props;
   const styles = {
     is_flex: is_flex,
     width: width,
@@ -10,6 +10,7 @@ const RowGrid = (props) => {
     padding: padding,
     bg: bg,
     center: center,
+    jc: jc,
   };
   return (
     <>
@@ -23,8 +24,9 @@ RowGrid.defaultProps = {
   width: "100%",
   padding: false,
   margin: false,
-  bg: false,
+  bg: "255, 255, 255, 0.0",
   center: false,
+  jc: "center",
 };
 
 const GridBox = styled.div`
@@ -33,11 +35,11 @@ const GridBox = styled.div`
   height: 100%;
   padding: ${(props) => props.padding};
   /* margin: 50px; */
-  background-color: ${(props) => props.bg};
+  background-color: ${((props) => (props.bg ? props.bg : 255), 255, 255, 0.0)};
 
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: ${(props) => props.jc};
   justify-items: center;
 `;
 

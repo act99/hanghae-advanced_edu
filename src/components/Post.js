@@ -1,23 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-
-import { Button, Grid, Image, RowGrid, Text } from "../elements";
+import { Grid } from "../elements";
 import Center from "./postLayout/Center";
 import Left from "./postLayout/Left";
 import Right from "./postLayout/Right";
 
 const Post = (props) => {
-  // console.log(props);
-  const history = useHistory();
   return (
     <>
       {props.layout === "center" ? (
-        <Center {...props} />
+        <Grid bg={"#EFF6FF"} padding="20px 0px">
+          <Center {...props} />
+        </Grid>
       ) : props.layout === "right" ? (
-        <Right {...props} />
+        <Grid bg={"#EFF6FF"} padding="20px 0px">
+          <Right {...props} />
+        </Grid>
       ) : (
-        <Left {...props} />
+        <Grid bg={"#EFF6FF"} padding="20px 0px">
+          <Left {...props} />
+        </Grid>
       )}
     </>
   );

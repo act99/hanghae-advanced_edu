@@ -2,12 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Button, Grid, Image, RowGrid, Text } from "../../elements";
+import Favorite from "../Favorite";
 
 const Right = (props) => {
   const history = useHistory();
-  const { src, user_info, id, contents, image_url, comment_cnt, insert_dt } =
-    props;
-  console.log(props);
+  const {
+    src,
+    user_info,
+    id,
+    contents,
+    image_url,
+    comment_cnt,
+    insert_dt,
+    is_me,
+    favorite_cnt,
+  } = props;
   return (
     <Grid>
       <RowGrid>
@@ -16,27 +25,39 @@ const Right = (props) => {
           <Text bold>{user_info.user_name}</Text>
           <Text>{insert_dt}</Text>
         </Grid>
-        <Button
-          onClick={() => {
-            history.replace(`/editpost/${id}`);
-          }}
-        >
-          수정하기
-        </Button>
+        {is_me ? (
+          <Button
+            onClick={() => {
+              history.push(`/editpost/${id}`);
+            }}
+          >
+            수정하기
+          </Button>
+        ) : null}
       </RowGrid>
-      <RowGrid>
-        <Grid padding="16px">
-          <Text>{contents}</Text>
-        </Grid>
-        <Grid>
-          <Link to="/detail">
+      <Link to={`/detail/${id}`} style={{ textDecoration: "none" }}>
+        <RowGrid>
+          <Grid padding="16px">
+            <Text>{contents}</Text>
+          </Grid>
+          <Grid>
             <Image shape="rectangle" src={image_url} />
-          </Link>
+          </Grid>
+        </RowGrid>
+      </Link>
+      <RowGrid jc="start">
+        <RowGrid padding="16px" width="100px">
+          <Favorite />
+          <Text bold margin="2px">
+            좋아요: {favorite_cnt}개
+          </Text>
+        </RowGrid>
+        <Grid padding="16px" width="100px">
+          <Text bold margin="2px">
+            댓글: {comment_cnt}개
+          </Text>
         </Grid>
       </RowGrid>
-      <Grid padding="16px">
-        <Text bold>{comment_cnt}개</Text>
-      </Grid>
     </Grid>
   );
 };

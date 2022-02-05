@@ -29,7 +29,7 @@ const Notification = (props) => {
     <>
       <Wrap>
         {noti.map((item, index) => {
-          return <Card props={item} />;
+          return <Card props={item} key={item.id} />;
         })}
       </Wrap>
     </>

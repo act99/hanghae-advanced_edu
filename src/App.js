@@ -30,21 +30,23 @@ function App() {
   return (
     <>
       <ConnectedRouter history={history}>
-        <Wrap>
-          <NavBar />
-          <Route path="/" exact component={PostList} />
-          <Route path="/signin" exact component={Signin} />
-          <Route path="/signup" exact component={Signup} />
-          <Route path="/profile" exact component={Profile} />
-          <Route path="/addpost" exact component={AddPost} />
-          <Route path="/detail" exact component={Detail} />
-          <Route path="/search" exact component={Search} />
-          <Route path="/editpost/:id" exact component={AddPost} />
-          <Route path="/notification" exact component={Notification}></Route>
-          <Permit>
-            <AddBtn />
-          </Permit>
-        </Wrap>
+        <BackGround>
+          <Wrap>
+            <NavBar />
+            <Route path="/" exact component={PostList} />
+            <Route path="/signin" exact component={Signin} />
+            <Route path="/signup" exact component={Signup} />
+            <Route path="/profile" exact component={Profile} />
+            <Route path="/addpost" exact component={AddPost} />
+            <Route path="/detail/:id" exact component={Detail} />
+            <Route path="/search" exact component={Search} />
+            <Route path="/editpost/:id" exact component={AddPost} />
+            <Route path="/notification" exact component={Notification}></Route>
+            <Permit>
+              <AddBtn />
+            </Permit>
+          </Wrap>
+        </BackGround>
         {/* {is_session === true ? <AddBtn /> : null} */}
       </ConnectedRouter>
     </>
@@ -54,6 +56,10 @@ function App() {
 const Wrap = styled.div`
   max-width: 768px;
   margin: auto;
+`;
+const BackGround = styled.div`
+  width: 100vw;
+  background-color: #eff6ff;
 `;
 
 export default App;

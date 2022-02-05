@@ -1,28 +1,37 @@
-import { Button, Grid, Image, Input, Text } from "../elements";
-import TextArea from "../elements/TextArea";
-import CommentList from "./CommentList";
-import CommentWrite from "./CommentWrite";
+import { Grid, Image, Text, Button, RowGrid } from "../elements";
 
 const DetailCompo = (props) => {
+  const { is_me } = props;
   return (
     <Grid>
       <Grid is_flex>
-        <Image shape="circle" src={props.src} />
-        <Text bold>{props.user_info.user_name}</Text>
-        <Text>{props.insert_dt}</Text>
-      </Grid>
-      <Grid padding="16px">
-        <Text>{props.contents}</Text>
+        <RowGrid is_flex jc="space-evenly">
+          <Grid>
+            <Image shape="circle" src={props.src} />
+            <Text bold>{props.user_info.user_name}</Text>
+            <Text>{props.insert_dt}</Text>
+          </Grid>
+
+          {is_me ? (
+            <Button
+              onClick={() => {
+                // history.push(`/editpost/${id}`);
+              }}
+            >
+              수정하기
+            </Button>
+          ) : null}
+        </RowGrid>
       </Grid>
       <Grid>
         <Image shape="rectangle" src={props.src} />
       </Grid>
       <Grid padding="16px">
-        <Text bold>댓글 {props.comment_cnt}개</Text>
+        <Text>{props.contents}</Text>
       </Grid>
-      <Grid is_flex>
-        <CommentWrite />
-        <CommentList />
+
+      <Grid padding="16px">
+        <Text bold>댓글 {props.comment_cnt}개</Text>
       </Grid>
     </Grid>
   );
