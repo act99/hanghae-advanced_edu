@@ -1,7 +1,12 @@
+import React from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Grid, Image, Text, Button, RowGrid } from "../elements";
 
 const DetailCompo = (props) => {
+  const history = useHistory();
   const { is_me } = props;
+  console.log(props);
+
   return (
     <Grid>
       <Grid is_flex>
@@ -15,7 +20,7 @@ const DetailCompo = (props) => {
           {is_me ? (
             <Button
               onClick={() => {
-                // history.push(`/editpost/${id}`);
+                history.push(`/editpost/${props.id}`);
               }}
             >
               수정하기
@@ -24,7 +29,7 @@ const DetailCompo = (props) => {
         </RowGrid>
       </Grid>
       <Grid>
-        <Image shape="rectangle" src={props.src} />
+        <Image shape="rectangle" src={props.image_url} />
       </Grid>
       <Grid padding="16px">
         <Text>{props.contents}</Text>

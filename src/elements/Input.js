@@ -1,14 +1,36 @@
 import styled from "styled-components";
 import React, { forwardRef } from "react";
 const Input = forwardRef((props, ref) => {
-  const { padding, placeholder, width, height, label, placeholderColor, type } =
-    props;
+  const {
+    padding,
+    placeholder,
+    width,
+    height,
+    label,
+    placeholderColor,
+    type,
+    onChange,
+    value,
+    onKeyPress,
+    onSubmit,
+  } = props;
   const styles = { padding, width, height, placeholder, placeholderColor };
 
   return (
     <>
       {props.label ? <Label>{label}</Label> : null}
-      <InputTile {...styles} ref={ref} type={type} />
+      <InputTile
+        {...styles}
+        ref={ref}
+        type={type}
+        onChange={onChange}
+        value={value}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            onSubmit(e);
+          }
+        }}
+      />
     </>
   );
 });
@@ -21,6 +43,9 @@ Input.defaultProps = {
   placeholderColor: "gray",
   label: "",
   type: "text",
+  onChange: () => {},
+  onKeyPress: () => {},
+  onSubmit: () => {},
 };
 
 const InputTile = styled.input`

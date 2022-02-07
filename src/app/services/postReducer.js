@@ -195,154 +195,43 @@ const getPostFB = (start = null, size = 3) => {
   };
 };
 
-// const getPostFB = (start = null, size = 3) => {
-//   return function (dispatch, getState, { history }) {
-//     // let _paging = getState().post.paging;
-//     // if (_paging.start && !_paging.next) {
-//     //   return;
-//     // }
-//     // dispatch(loading(true));
-//     // const postDB = firestore.collection("post");
-//     // let query = postDB.orderBy("insert_dt", "desc").limit(size + 1);
-//     // if (start) {
-//     //   query = query.startAt(start);
-//     // }
-//     // query
-//     //   .limit(size + 1)
-//     //   .get()
-//     //   .then((docs) => {
-//     //     let post_list = [];
-//     //     let paging = {
-//     //       start: docs.docs[0],
-//     //       next:
-//     //         docs.docs.length === size + 1
-//     //           ? docs.docs[docs.docs.length - 1]
-//     //           : null,
-//     //       size: size,
-//     //     };
-//     //     docs.forEach((doc) => {
-//     //       let _post = doc.data();
-//     //       let post = Object.keys(_post).reduce(
-//     //         (acc, curr) => {
-//     //           if (curr.indexOf("user_") !== -1) {
-//     //             return {
-//     //               ...acc,
-//     //               user_info: { ...acc.user_info, [curr]: _post[curr] },
-//     //             };
-//     //           }
-//     //           return { ...acc, [curr]: _post[curr] };
-//     //         },
-//     //         { id: doc.id, user_info: {} }
-//     //       );
-//     //       post_list.push(post);
-//     //     });
-//     //     post_list.pop();
-//     //     dispatch(setPost(post_list, paging));
-//     //   });
-//     //** */
-//     let _paging = getState().post.paging;
-//     if (_paging.start && !_paging.next) {
-//       return;
-//     }
-//     dispatch(loading(true));
-//     const postDB = firestore.collection("post");
-//     let query = postDB.orderBy("insert_dt", "desc");
-
-//     if (start) {
-//       query = query.startAt(start);
-//     }
-//     query
-//       .limit(size + 1)
-//       .get()
-//       .then((docs) => {
-//         let post_list = [];
-//         console.log(docs.docs);
-//         let paging = {
-//           start: docs.docs[0],
-//           next:
-//             docs.docs.length === size + 1
-//               ? docs.docs[docs.docs.length - 1]
-//               : null,
-//           size: size,
-//         };
-//         docs.forEach((doc) => {
-//           let _post = doc.data();
-//           let post = Object.keys(_post).reduce(
-//             (acc, curr) => {
-//               if (curr.indexOf("user_") !== -1) {
-//                 return {
-//                   ...acc,
-//                   user_info: { ...acc.user_info, [curr]: _post[curr] },
-//                 };
-//               }
-//               return { ...acc, [curr]: _post[curr] };
-//             },
-//             { id: doc.id, user_info: {} }
-//           );
-//           post_list.push(post);
-//         });
-//         post_list.pop();
-//         dispatch(setPost(post_list, paging));
-//       });
-//   };
-// };
-
-// const getPostFB = () => {
-//   return function (dispatch, getState, { history }) {
-//     const postDB = firestore.collection("post");
-//     let query = postDB.orderBy("insert_dt", "desc").limit(2);
-//     query.get().then((docs) => {
-//       let post_list = [];
-//       docs.forEach((doc) => {
-//         let _post = doc.data();
-//         let post = Object.keys(_post).reduce(
-//           (acc, curr) => {
-//             if (curr.indexOf("user_") !== -1) {
-//               return {
-//                 ...acc,
-//                 ...acc.user_info,
-//                 [curr]: _post[curr],
-//               };
-//             }
-//             return { ...acc, [curr]: _post[curr] };
-//           },
-//           { id: doc.id, user_info: {} }
-//         );
-//         post_list.push(post);
-//       });
-//       dispatch(setPost(post_list));
-//     });
-//     return;
-//     postDB.get().then((docs) => {
-//       let post_list = [];
-//       docs.forEach((doc) => {
-//         let _post = doc.data();
-//         let post = Object.keys(_post).reduce(
-//           (acc, curr) => {
-//             if (curr.indexOf("user_") !== -1) {
-//               return {
-//                 ...acc,
-//                 ...acc.user_info,
-//                 [curr]: _post[curr],
-//               };
-//             }
-//             return { ...acc, [curr]: _post[curr] };
-//           },
-//           { id: doc.id, user_info: {} }
-//         );
-//         post_list.push(post);
-//       });
-//       dispatch(setPost(post_list));
-//     });
-//   };
-// };
+const getOnePostFB = (id) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection("post");
+    postDB
+      .doc(id)
+      .get()
+      .then((doc) => {
+        console.log(doc.data());
+        let _post = doc.data();
+        let post = Object.keys(_post).reduce(
+          (acc, cur) => {
+            return { ...acc, [cur]: _post[cur] };
+          },
+          { id: doc.id, user_info: {} }
+        );
+        dispatch(setPost([post]));
+      });
+  };
+};
 
 export default handleActions(
   {
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list.push(...action.payload.post_list);
-        draft.paging = action.payload.paging;
+        draft.list = draft.list.reduce((acc, curr) => {
+          if (acc.findIndex((a) => a.id === curr.id) === -1) {
+            return [...acc, curr];
+          } else {
+            acc[acc.findIndex((a) => a.id === curr.id)] = curr;
+            return acc;
+          }
+        }, []);
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
+
         draft.is_loading = false;
       }),
     [ADD_POST]: (state, action) =>
@@ -352,6 +241,11 @@ export default handleActions(
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
+      }),
+    [EDIT_POST]: (state, action) =>
+      produce(state, (draft) => {
+        let idx = draft.list.findIndex((p) => p.id === action.payload.post_id);
+        draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
       }),
   },
   initialState
@@ -363,6 +257,8 @@ const actionCreators = {
   getPostFB,
   addPostFB,
   updatePostFB,
+  getOnePostFB,
+  editPost,
 };
 
 export { actionCreators };

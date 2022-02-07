@@ -5,6 +5,7 @@ import loginReducer from "./services/loginReducer";
 import { connectRouter } from "connected-react-router";
 import Post from "./services/postReducer";
 import Image from "./services/imageReducer";
+import commentReducer from "./services/commentReducer";
 
 export const history = createBrowserHistory();
 
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
   post: Post,
   image: Image,
+  comment: commentReducer,
 });
 
 const middlewares = [thunk.withExtraArgument({ history: history })];

@@ -36,7 +36,7 @@ const Center = (props) => {
         ) : null}
       </RowGrid>
       <Link
-        to={{ pathname: `/detail/${id}`, state: props }}
+        to={{ pathname: `/detail/${id}` }}
         style={{ textDecoration: "none" }}
       >
         <Grid>

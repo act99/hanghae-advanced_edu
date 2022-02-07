@@ -14,7 +14,7 @@ const PostList = (props) => {
   console.log(post_list);
   console.log(paging.next);
   React.useEffect(() => {
-    if (post_list.length === 0) {
+    if (post_list.length < 2) {
       dispatch(postActions.getPostFB());
     }
   }, []);
