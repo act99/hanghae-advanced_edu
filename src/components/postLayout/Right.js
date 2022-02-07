@@ -46,13 +46,13 @@ const Right = (props) => {
         </RowGrid>
       </Link>
       <RowGrid jc="start">
-        <RowGrid padding="16px" width="100px">
+        <RowGrid padding="16px" width="150px">
           <Favorite />
           <Text bold margin="2px">
             좋아요: {favorite_cnt}개
           </Text>
         </RowGrid>
-        <Grid padding="16px" width="100px">
+        <Grid padding="16px" width="150px">
           <Text bold margin="2px">
             댓글: {comment_cnt}개
           </Text>

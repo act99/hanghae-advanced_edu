@@ -6,6 +6,7 @@ import moment from "moment";
 import { actionCreators as imageActions } from "./imageReducer";
 import { getDoc, setDoc, doc as document } from "firebase/firestore";
 import { update } from "lodash";
+import firebase from "firebase/compat/app";
 
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
@@ -40,6 +41,8 @@ const initialPost = {
   comment_cnt: 0,
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
   layout: "center",
+  favorite_cnt: 0,
+  favorite_list: [],
 };
 
 const addPostFB = (contents = "", layout = "center") => {
@@ -141,6 +144,106 @@ const updatePostFB = (id = null, post = {}) => {
           });
       });
     }
+  };
+};
+
+// id => postID, post => 수정할 포스트 데이터
+const favoriteFB = (id = null, user_id = null) => {
+  return async function (dispatch, getState, { history }) {
+    if (!id) {
+      alert("게시물 정보가 없어요!");
+      console.log("게시물 정보가 없습니다. postReducer 93 번째줄");
+      return;
+    }
+    const post_index = getState().post.list.findIndex((item) => item.id === id);
+    const _post = getState().post.list[post_index];
+    const favoriteList = _post.favorite_list.slice();
+    console.log(favoriteList);
+    console.log(favoriteList.filter((item) => item !== user_id));
+    if (_post.favorite_list.includes(user_id)) {
+      console.log("포함");
+
+      const increment = firebase.firestore.FieldValue.increment(-0.5);
+      const postDB = firestore.collection("post");
+      const deletedList = favoriteList.filter((item) => item !== user_id);
+      postDB
+        .doc(id)
+        .update({ favorite_cnt: increment })
+        .then(
+          console.log("마이너스 1"),
+          editPost(id, { favorite_cnt: parseInt(_post.favorite_cnt) - 1 })
+        )
+        .catch((error) => console.log(error));
+      postDB
+        .doc(id)
+        .update({ favorite_list: deletedList })
+        .then(
+          console.log("리스트 안에 아이디 사라짐"),
+          editPost(id, { favorite_list: deletedList })
+        );
+      console.log(_post);
+    } else {
+      const increment = firebase.firestore.FieldValue.increment(0.5);
+      const postDB = firestore.collection("post");
+      favoriteList.push(user_id);
+      postDB
+        .doc(id)
+        .update({ favorite_cnt: increment })
+        .then(
+          console.log("플러스 1"),
+          dispatch(
+            editPost(id, { favorite_cnt: parseInt(_post.favorite_cnt) + 1 })
+          )
+        )
+        .catch((error) => console.log(error));
+
+      postDB
+        .doc(id)
+        .update({ favorite_list: favoriteList })
+        .then(
+          console.log("리스트 안에 아이디 추가됨", favoriteList),
+          editPost(id, { favorite_list: favoriteList })
+        );
+    }
+    console.log(_post);
+
+    // if (_image === _post.image_url) {
+    //   postDB
+    //     .doc(id)
+    //     .update({favorite_cnt:})
+    //     .then((doc) => {
+    //       dispatch(editPost(id, { ...post }));
+    //       history.replace("/");
+    //       history.go(0);
+    //     });
+    //   return;
+    // } else {
+    //   const user_id = getState().user.uid;
+    //   const _upload = storage
+    //     .ref(`images/${user_id}_${new Date().getTime()}`)
+    //     .putString(_image, "data_url");
+    //   _upload.then((snapshot) => {
+    //     snapshot.ref
+    //       .getDownloadURL()
+    //       .then((url) => {
+    //         return url;
+    //       })
+    //       .then((url) => {
+    //         postDB
+    //           .doc(id)
+    //           .update({ ...post, image_url: url })
+    //           .then((doc) => {
+    //             dispatch(editPost(id, { ...post, image_url: url }));
+    //             history.replace("/");
+    //             history.go(0);
+    //           });
+    //       })
+    //       .catch((error) => {
+    //         alert("이미지 업로드에 문제가 있습니다.");
+    //         console.log("이미지 업로드 에러 129번째 ", error);
+    //       });
+    //   });
+    // }
   };
 };
 
@@ -251,6 +354,7 @@ const actionCreators = {
   updatePostFB,
   getOnePostFB,
   editPost,
+  favoriteFB,
 };
 
 export { actionCreators };

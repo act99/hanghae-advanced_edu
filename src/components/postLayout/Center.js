@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Button, Grid, Image, RowGrid, Text } from "../../elements";
 import Favorite from "../Favorite";
+import CommentIcon from "@mui/icons-material/Comment";
 
 const Center = (props) => {
   const history = useHistory();
@@ -47,17 +48,18 @@ const Center = (props) => {
         </Grid>
       </Link>
       <RowGrid jc="start">
-        <RowGrid padding="16px" width="100px">
-          <Favorite />
+        <RowGrid padding="16px" width="150px">
+          <Favorite id={id} />
           <Text bold margin="2px">
             좋아요: {favorite_cnt}개
           </Text>
         </RowGrid>
-        <Grid padding="16px" width="100px">
+        <RowGrid padding="16px" width="150px">
+          <CommentIcon color="secondary" />
           <Text bold margin="2px">
             댓글: {comment_cnt}개
           </Text>
-        </Grid>
+        </RowGrid>
       </RowGrid>
     </Grid>
   );

@@ -20,4 +20,5 @@ const firestore = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 const db = getFirestore();
+
 export { auth, apiKey, firestore, storage, db };

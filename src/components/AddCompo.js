@@ -40,14 +40,12 @@ const AddCompo = (props) => {
     );
   };
   const dataRef = React.useRef(null);
-  console.log(params);
   React.useEffect(() => {
     if (params.id) {
       const docRef = doc(db, "post", params.id);
       const gettingDoc = async () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log(docSnap.data());
           dataRef.current = { ...docSnap.data() };
           // dispatch(postActions.setPost(postList));
           setDataLoading(true);

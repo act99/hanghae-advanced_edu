@@ -16,13 +16,9 @@ const NotiBadege = (props) => {
   const db = getDatabase();
 
   const notiCheck = () => {
-    const Data = {
+    update(ref(db, `noti/${user_id}`), {
       read: true,
-    };
-    console.log(user_id);
-    const updates = {};
-    updates["/noti/" + user_id] = Data;
-    update(ref(db), updates);
+    });
     props.onClick();
   };
   console.log(user_id);
