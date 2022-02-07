@@ -74,7 +74,6 @@ const addPostFB = (contents = "", layout = "center") => {
             .add({ ...user_info, ..._post, image_url: url })
             .then((doc) => {
               let post = { user_info, ..._post, id: doc.id, image_url: url };
-              console.log(post);
               dispatch(addPost(post));
               setDoc(document(db, "post", doc.id), { ...post });
               history.replace("/");
@@ -102,11 +101,8 @@ const updatePostFB = (id = null, post = {}) => {
       return;
     }
     const _image = getState().image.preview;
-    console.log(_image);
-    console.log(getState());
     const _post_idx = getState().post.list.findIndex((item) => item.id === id);
     const _post = getState().post.list[_post_idx];
-    console.log(_post);
     const postDB = firestore.collection("post");
     if (_image === _post.image_url) {
       postDB
@@ -127,7 +123,6 @@ const updatePostFB = (id = null, post = {}) => {
         snapshot.ref
           .getDownloadURL()
           .then((url) => {
-            console.log(url);
             return url;
           })
           .then((url) => {
@@ -177,7 +172,6 @@ const getPostFB = (start = null, size = 3) => {
 
         docs.forEach((doc) => {
           let _post = doc.data();
-          console.log(_post);
           let post = Object.keys(_post).reduce(
             (acc, cur) => {
               return { ...acc, [cur]: _post[cur] };
@@ -186,7 +180,6 @@ const getPostFB = (start = null, size = 3) => {
           );
 
           post_list.push(post);
-          console.log(post_list);
         });
         post_list.pop();
 
@@ -202,7 +195,6 @@ const getOnePostFB = (id) => {
       .doc(id)
       .get()
       .then((doc) => {
-        console.log(doc.data());
         let _post = doc.data();
         let post = Object.keys(_post).reduce(
           (acc, cur) => {

@@ -3,8 +3,10 @@ import { produce } from "immer";
 import { firestore } from "../../shared/firebase";
 import "moment";
 import moment from "moment";
-import firebase from "firebase/compat/app";
+import { getDatabase, ref, update } from "firebase/database";
 import { actionCreators as postActions } from "./postReducer";
+import firebase from "firebase/compat/app";
+
 const SET_COMMENT = "SET_COMMENT";
 const ADD_COMMENT = "ADD_COMMENT";
 
@@ -57,6 +59,13 @@ const addCommentFB = (post_id, contents) => {
                 comment_cnt: parseInt(post.comment_cnt) + 1,
               })
             );
+            const db = getDatabase();
+            const Data = {
+              read: false,
+            };
+            const updates = {};
+            updates["/noti/" + post.user_info.user_id] = Data;
+            update(ref(db), updates);
           }
         });
     });

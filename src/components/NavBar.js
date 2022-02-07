@@ -7,7 +7,13 @@ import { actionCreators as userActions } from "../app/services/loginReducer";
 import { actionCreators as imageActions } from "../app/services/imageReducer";
 import { apiKey } from "../shared/firebase";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Badge, IconButton } from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import PersonIcon from "@mui/icons-material/Person";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import NotiBadege from "./NotiBadge";
 const NavBar = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -32,19 +38,36 @@ const NavBar = (props) => {
           </Button>
         </div>
         <div>
-          <Link to="/profile">
-            <Button backgroundColor="gray" color="black">
-              프로필
-            </Button>
-          </Link>
-          <Link to="/notification">
-            <Button backgroundColor="gray" color="black">
-              알림
-            </Button>
-          </Link>
-          <Button backgroundColor="gray" color="black" onClick={logOut}>
-            로그아웃
-          </Button>
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+            onClick={() => {
+              history.push("/profile");
+            }}
+          >
+            <PersonIcon />
+          </IconButton>
+          {/* <Badge color="secondary" badgeContent={99}>
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => history.push("/notification")}
+            >
+              <NotificationsIcon />
+            </IconButton>
+          </Badge> */}
+          <NotiBadege onClick={() => history.push("/notification")} />
+
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+            onClick={logOut}
+          >
+            <LogoutIcon />
+          </IconButton>
         </div>
       </Wrap>
     );
@@ -62,16 +85,26 @@ const NavBar = (props) => {
         </Button>
       </div>
       <div>
-        <Link to="/signup">
-          <Button backgroundColor="gray" color="black">
-            회원가입
-          </Button>
-        </Link>
-        <Link to="/signin">
-          <Button backgroundColor="gray" color="black">
-            로그인
-          </Button>
-        </Link>
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          onClick={() => {
+            history.push("/signup");
+          }}
+        >
+          <PersonAddIcon />
+        </IconButton>
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          onClick={() => {
+            history.push("/signin");
+          }}
+        >
+          <LoginIcon />
+        </IconButton>
       </div>
     </Wrap>
   );
