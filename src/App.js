@@ -60,7 +60,7 @@ const Wrap = styled.div`
 `;
 const BackGround = styled.div`
   width: 100vw;
-  background-color: #eff6ff;
+  background-color: #ffffff;
 `;
 
 export default App;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { Grid, Image, RowGrid, Text } from "../elements";
 
 const Card = (props) => {
@@ -33,5 +34,9 @@ Card.defaultProps = {
   user_name: "",
   id: null,
 };
+
+const BorderStyle = styled.div`
+  border: solid 1px #585858;
+`;
 
 export default Card;

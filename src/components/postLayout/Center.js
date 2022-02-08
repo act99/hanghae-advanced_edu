@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Button, Grid, Image, RowGrid, Text } from "../../elements";
 import Favorite from "../Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
+import styled from "styled-components";
+import CreateIcon from "@mui/icons-material/Create";
 
 const Center = (props) => {
   const history = useHistory();
@@ -18,51 +20,63 @@ const Center = (props) => {
     is_me,
     favorite_cnt,
   } = props;
+  console.log(props);
   return (
     <Grid>
-      <RowGrid>
-        <Grid is_flex>
-          <Image shape="circle" src={src} />
-          <Text bold>{user_info.user_name}</Text>
-          <Text>{insert_dt}</Text>
-        </Grid>
-        {is_me ? (
-          <Button
-            onClick={() => {
-              history.push(`/editpost/${id}`);
-            }}
-          >
-            수정하기
-          </Button>
-        ) : null}
-      </RowGrid>
-      <Link
-        to={{ pathname: `/detail/${id}` }}
-        style={{ textDecoration: "none" }}
-      >
-        <Grid>
-          <Image shape="rectangle" src={image_url} />
-        </Grid>
-        <Grid padding="16px">
-          <Text>{contents}</Text>
-        </Grid>
-      </Link>
-      <RowGrid jc="start">
-        <RowGrid padding="16px" width="150px" height="25px">
-          <Favorite id={id} />
-          <Text bold margin="2px">
-            좋아요: {favorite_cnt}개
-          </Text>
+      <BorderStyle>
+        <RowGrid margin="5px 10px" width="90%">
+          <Grid is_flex>
+            <Image shape="circle" src={src} />
+            <Text bold>{user_info.user_name}</Text>
+            <Text>{insert_dt}</Text>
+          </Grid>
+          {is_me ? (
+            <Button
+              backgroundColor="white"
+              color="black"
+              onClick={() => {
+                history.push(`/editpost/${id}`);
+              }}
+            >
+              <RowGrid width="100px" margin="0px 10px 0px 0px">
+                <h3>수정하기</h3>
+                <CreateIcon />
+              </RowGrid>
+            </Button>
+          ) : null}
         </RowGrid>
-        <RowGrid padding="16px" width="150px">
-          <CommentIcon color="secondary" />
-          <Text bold margin="2px 8px">
-            댓글: {comment_cnt}개
-          </Text>
+        <Link
+          to={{ pathname: `/detail/${id}` }}
+          style={{ textDecoration: "none" }}
+        >
+          <Grid>
+            <Image shape="rectangle" src={image_url} />
+          </Grid>
+          <Grid padding="16px">
+            <Text>{contents}</Text>
+          </Grid>
+        </Link>
+        <RowGrid jc="start">
+          <RowGrid padding="16px" width="150px" height="25px">
+            <Favorite props={{ ...props }} />
+            <Text bold margin="2px">
+              좋아요: {favorite_cnt}개
+            </Text>
+          </RowGrid>
+          <RowGrid padding="16px" width="150px">
+            <CommentIcon color="secondary" />
+            <Text bold margin="2px 8px">
+              댓글: {comment_cnt}개
+            </Text>
+          </RowGrid>
         </RowGrid>
-      </RowGrid>
+      </BorderStyle>
     </Grid>
   );
 };
+
+const BorderStyle = styled.div`
+  border: solid 1px #585858;
+`;
 
 export default Center;

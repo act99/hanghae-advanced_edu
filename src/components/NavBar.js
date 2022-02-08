@@ -12,6 +12,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import NotiBadege from "./NotiBadge";
+import { Grid, RowGrid } from "../elements";
 const NavBar = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -30,15 +31,18 @@ const NavBar = (props) => {
   if (is_login === true && is_session === true) {
     return (
       <Wrap>
-        <Logo />
-        <div>
-          <Button backgroundColor="gray" color="black" onClick={goBack}>
-            Instagram?
-          </Button>
-        </div>
-        <div>
+        <button
+          onClick={goBack}
+          style={{
+            border: "solid 0px",
+            backgroundColor: "white",
+            cursor: "pointer",
+          }}
+        >
+          <LogoText> Act99Gram</LogoText>
+        </button>
+        <StyleDiv>
           <IconButton
-            color="primary"
             aria-label="upload picture"
             component="span"
             onClick={() => {
@@ -46,37 +50,40 @@ const NavBar = (props) => {
             }}
           >
             <PersonIcon />
+            <NavText>Sign</NavText>
           </IconButton>
+
           <NotiBadege onClick={() => history.push("/notification")} />
 
           <IconButton
-            color="primary"
             aria-label="upload picture"
             component="span"
             onClick={logOut}
           >
             <LogoutIcon />
+            <NavText>SignOut</NavText>
           </IconButton>
-        </div>
+        </StyleDiv>
       </Wrap>
     );
   }
 
   return (
     <Wrap>
-      <Logo />
       <StyleDiv>
-        <Button
-          backgroundColor="gray"
-          color="black"
-          onClick={() => history.replace("/")}
+        <button
+          onClick={goBack}
+          style={{
+            border: "solid 0px",
+            backgroundColor: "white",
+            cursor: "pointer",
+          }}
         >
-          Instagram?
-        </Button>
+          <LogoText> Act99Gram</LogoText>
+        </button>
       </StyleDiv>
       <StyleDiv>
         <IconButton
-          color="primary"
           aria-label="upload picture"
           component="span"
           onClick={() => {
@@ -84,9 +91,9 @@ const NavBar = (props) => {
           }}
         >
           <PersonAddIcon />
+          <NavText>SignUp</NavText>
         </IconButton>
         <IconButton
-          color="primary"
           aria-label="upload picture"
           component="span"
           onClick={() => {
@@ -94,6 +101,7 @@ const NavBar = (props) => {
           }}
         >
           <LoginIcon />
+          <NavText>SignIn</NavText>
         </IconButton>
       </StyleDiv>
     </Wrap>
@@ -101,25 +109,35 @@ const NavBar = (props) => {
 };
 
 const Wrap = styled.div`
-  width: 100%;
+  width: 90%;
   height: 100px;
   display: flex;
   justify-items: center;
   justify-content: space-between;
+  padding: 0px 20px;
+  color: #000000;
 `;
 
 const StyleDiv = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: between;
   justify-items: center;
 `;
 
-const Logo = styled.div`
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/sparta-advanced.appspot.com/o/images%2Flogo.PNG?alt=media&token=85ab4a41-2bfd-46da-9079-3de764095c74");
-  background-size: cover;
-  width: 150px;
-  height: 50px;
-  /* --size: 200px; */
+const WrapIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LogoText = styled.h3`
+  font-family: "Parisienne", cursive;
+  font-size: x-large;
+`;
+
+const NavText = styled.h4`
+  font-family: "Parisienne", cursive;
+  font-size: medium;
+  margin-left: 5px;
 `;
 
 NavBar.defaultProps = {};

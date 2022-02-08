@@ -9,6 +9,7 @@ import {
   goOffline,
   update,
 } from "firebase/database";
+import styled from "styled-components";
 
 const NotiBadege = (props) => {
   const [isRead, setIsRead] = React.useState(true);
@@ -35,16 +36,18 @@ const NotiBadege = (props) => {
   }, [isRead]);
   return (
     <>
-      <Badge color="secondary" variant="dot" invisible={isRead}>
-        <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="span"
-          onClick={notiCheck}
-        >
-          <NotificationsIcon />
-        </IconButton>
-      </Badge>
+      <IconButton
+        aria-label="upload picture"
+        component="span"
+        onClick={notiCheck}
+      >
+        <Badge color="secondary" variant="dot" invisible={isRead}>
+          <WrapIcon>
+            <NotificationsIcon />
+          </WrapIcon>
+          <NavText>Alarm</NavText>
+        </Badge>
+      </IconButton>
     </>
   );
 };
@@ -52,5 +55,13 @@ const NotiBadege = (props) => {
 NotiBadege.defaultProps = {
   onClick: () => {},
 };
+const WrapIcon = styled.div`
+  margin-top: 20px;
+`;
+
+const NavText = styled.h4`
+  font-family: "Parisienne", cursive;
+  font-size: medium;
+`;
 
 export default NotiBadege;

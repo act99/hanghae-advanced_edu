@@ -8,15 +8,15 @@ const Post = (props) => {
   return (
     <>
       {props.layout === "center" ? (
-        <Grid bg={"#EFF6FF"} padding="20px 0px">
+        <Grid padding="20px 0px">
           <Center {...props} />
         </Grid>
       ) : props.layout === "right" ? (
-        <Grid bg={"#EFF6FF"} padding="20px 0px">
+        <Grid padding="20px 0px">
           <Right {...props} />
         </Grid>
       ) : (
-        <Grid bg={"#EFF6FF"} padding="20px 0px">
+        <Grid padding="20px 0px">
           <Left {...props} />
         </Grid>
       )}

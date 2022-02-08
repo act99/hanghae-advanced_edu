@@ -249,7 +249,7 @@ const AddCompo = (props) => {
                 </Text>
                 <TextArea
                   onChange={changeContents}
-                  width="300px"
+                  width="30vw"
                   height="220px"
                   margin="0px"
                 />
@@ -289,7 +289,7 @@ const AddCompo = (props) => {
                 </Text>
                 <TextArea
                   onChange={changeContents}
-                  width="300px"
+                  width="30vw"
                   height="220px"
                   margin="0px"
                 />

@@ -43,6 +43,7 @@ const ImageCircle = styled.div`
 const AspectOutter = styled.div`
   /* width: 100%; */
   ${(props) => (props.row ? "width: 300px;" : "width: 100%;")}
+
   min-width: 200px;
 `;
 

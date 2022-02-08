@@ -26,10 +26,12 @@ const Detail = () => {
   React.useEffect(() => {
     if (post) {
       return;
+    } else {
+      dispatch(postActions.getOnePostFB(id));
+      setPost(post_data);
     }
-    dispatch(postActions.getOnePostFB(id));
-    setPost(post_data);
   }, [post_data]);
+  console.log(post);
 
   if (is_session && is_login) {
     return (

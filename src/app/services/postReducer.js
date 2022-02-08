@@ -216,7 +216,7 @@ const favoriteFB = (id, user_id = null) => {
     // const addList = _post.favorite_list.push(user_id + "");
     // console.log(_post);
     // console.log(deleteList);
-    console.log(post.favorite_list.includes(user_id + ""));
+    // console.log(post.favorite_list.includes(user_id + ""));
     if (post.favorite_list.includes(user_id + "")) {
       // dispatch(editPost(id, decrease));
       // console.log("삭제");

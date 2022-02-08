@@ -2,12 +2,12 @@ import history from "history";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
+import CreateIcon from "@mui/icons-material/Create";
 const AddBtn = () => {
   return (
     <Link to="/addpost">
       <Button>
-        <h3>+</h3>
+        <CreateIcon />
       </Button>
     </Link>
   );
@@ -20,7 +20,7 @@ const Button = styled.button`
   position: fixed;
   bottom: 50px;
   right: 50px;
-  background-color: yellowgreen;
+  background-color: gray;
   border-radius: 25px;
   cursor: pointer;
   text-align: center;
