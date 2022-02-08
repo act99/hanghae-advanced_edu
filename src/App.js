@@ -55,6 +55,7 @@ function App() {
 
 const Wrap = styled.div`
   max-width: 768px;
+  min-height: 100vh;
   margin: auto;
 `;
 const BackGround = styled.div`

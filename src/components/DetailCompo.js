@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Grid, Image, Text, Button, RowGrid } from "../elements";
+import Delete from "./Delete";
 
 const DetailCompo = (props) => {
   const history = useHistory();
@@ -18,13 +19,16 @@ const DetailCompo = (props) => {
           </Grid>
 
           {is_me ? (
-            <Button
-              onClick={() => {
-                history.push(`/editpost/${props.id}`);
-              }}
-            >
-              수정하기
-            </Button>
+            <>
+              <Button
+                onClick={() => {
+                  history.push(`/editpost/${props.id}`);
+                }}
+              >
+                수정하기
+              </Button>
+              <Delete id={props.id} />
+            </>
           ) : null}
         </RowGrid>
       </Grid>

@@ -4,7 +4,7 @@ import { db, firestore, storage } from "../../shared/firebase";
 // import "moment"
 import moment from "moment";
 import { actionCreators as imageActions } from "./imageReducer";
-import { getDoc, setDoc, doc as document } from "firebase/firestore";
+import { getDoc, setDoc, doc as document, deleteDoc } from "firebase/firestore";
 import { update } from "lodash";
 import firebase from "firebase/compat/app";
 
@@ -12,6 +12,7 @@ const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
 const LOADING = "LOADING";
+const DELETE_POST = "DELETE_POST";
 const setPost = createAction(SET_POST, (post_list, paging) => ({
   post_list,
   paging,
@@ -22,6 +23,9 @@ const editPost = createAction(EDIT_POST, (post_id, post) => ({
   post,
 }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+const deletePost = createAction(DELETE_POST, (post_list) => ({
+  post_list,
+}));
 const initialState = {
   list: [],
   paging: { start: null, next: null, size: 3 },
@@ -43,6 +47,33 @@ const initialPost = {
   layout: "center",
   favorite_cnt: 0,
   favorite_list: [],
+};
+
+const deletePostFB = (post_id = null, post_list = []) => {
+  return function async(dispatch, getState, { history }) {
+    if (!post_id) {
+      alert("게시물을 불러올 수 없습니다.");
+      console.log("delete reducer 오류");
+      return;
+    }
+
+    // 얘는 뭐 나중에 dispatch(delete 에 인덱스 넣어야하니 넣자)
+    const post_index = getState().post.list.findIndex(
+      (item) => item.id === post_id
+    );
+    const _post = getState().post.list.filter((item, index) => {
+      return index !== post_index;
+    });
+    console.log(_post);
+    //**데이터 완성본  */
+    deleteDoc(document(db, "post", post_id))
+      .then(history.replace("/"), dispatch(deletePost(_post)))
+      .catch((error) => console.log(error));
+    //**데이터 완성본  */
+    // dispatch(deletePost(post_id, ));
+    // const posts = getState().post.filter((item) => item.id !== post_id);
+    // console.log(posts);
+  };
 };
 
 const addPostFB = (contents = "", layout = "center") => {
@@ -229,76 +260,7 @@ const favoriteFB = (id = null, user_id = null) => {
             .catch((e) => console.log(e))
         )
         .catch((e) => console.log(e));
-
-      // dispatch(editPost(id, increase));
-      // console.log(user_id);
-      // console.log("추가");
-      // dispatch(
-      //   editPost(id, {
-      //     favorite_cnt: parseInt(_post.favorite_cnt) + 1,
-      //     favorite_list: [...addList],
-      //   })
-      // );
-      // console.log(_post);
-      // const increment = firebase.firestore.FieldValue.increment(0.5);
-      // const postDB = firestore.collection("post");
-      // favoriteList.push(user_id);
-      // postDB
-      //   .doc(id)
-      //   .update({ favorite_cnt: increment })
-      //   .then(
-      //     console.log("플러스 1"),
-      //     dispatch(
-      //       editPost(id, { favorite_cnt: parseInt(_post.favorite_cnt) + 1 })
-      //     )
-      //   )
-      //   .catch((error) => console.log(error));
-      // postDB
-      //   .doc(id)
-      //   .update({ favorite_list: favoriteList })
-      //   .then(
-      //     console.log("리스트 안에 아이디 추가됨", favoriteList),
-      //     editPost(id, { favorite_list: favoriteList })
-      //   );
     }
-
-    // if (_image === _post.image_url) {
-    //   postDB
-    //     .doc(id)
-    //     .update({favorite_cnt:})
-    //     .then((doc) => {
-    //       dispatch(editPost(id, { ...post }));
-    //       history.replace("/");
-    //       history.go(0);
-    //     });
-    //   return;
-    // } else {
-    //   const user_id = getState().user.uid;
-    //   const _upload = storage
-    //     .ref(`images/${user_id}_${new Date().getTime()}`)
-    //     .putString(_image, "data_url");
-    //   _upload.then((snapshot) => {
-    //     snapshot.ref
-    //       .getDownloadURL()
-    //       .then((url) => {
-    //         return url;
-    //       })
-    //       .then((url) => {
-    //         postDB
-    //           .doc(id)
-    //           .update({ ...post, image_url: url })
-    //           .then((doc) => {
-    //             dispatch(editPost(id, { ...post, image_url: url }));
-    //             history.replace("/");
-    //             history.go(0);
-    //           });
-    //       })
-    //       .catch((error) => {
-    //         alert("이미지 업로드에 문제가 있습니다.");
-    //         console.log("이미지 업로드 에러 129번째 ", error);
-    //       });
-    //   });
-    // }
   };
 };
 
@@ -397,6 +359,14 @@ export default handleActions(
         let idx = draft.list.findIndex((p) => p.id === action.payload.post_id);
         draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
       }),
+    [DELETE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = action.payload.post_list;
+        // const new_list = draft.list.filter((item, index) => {
+        //   return parseInt(action.payload.index) !== index;
+        // });
+        // return { list: new_list };
+      }),
   },
   initialState
 );
@@ -410,6 +380,7 @@ const actionCreators = {
   getOnePostFB,
   editPost,
   favoriteFB,
+  deletePostFB,
 };
 
 export { actionCreators };

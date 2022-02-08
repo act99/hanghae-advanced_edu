@@ -31,7 +31,7 @@ const NotiBadege = (props) => {
       console.log(data);
       setIsRead(snapshot.val().read);
     });
-  }, []);
+  }, [isRead]);
   return (
     <>
       <Badge color="secondary" variant="dot" invisible={isRead}>
