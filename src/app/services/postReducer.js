@@ -155,57 +155,112 @@ const favoriteFB = (id = null, user_id = null) => {
       console.log("게시물 정보가 없습니다. postReducer 93 번째줄");
       return;
     }
+
     const post_index = getState().post.list.findIndex((item) => item.id === id);
     const _post = getState().post.list[post_index];
-    const favoriteList = _post.favorite_list.slice();
-    console.log(favoriteList);
-    console.log(favoriteList.filter((item) => item !== user_id));
-    if (_post.favorite_list.includes(user_id)) {
-      console.log("포함");
+    const post = { ..._post };
+    console.log(post);
+    console.log(post.favorite_list);
+    if (post.favorite_list === undefined) {
+      post.favorite_list = [];
+    }
+    const increase = {
+      ...post,
+      favorite_cnt: post.favorite_cnt + 1,
+      favorite_list: [...post.favorite_list, user_id],
+    };
+    const decrease = {
+      ...post,
+      favorite_cnt: post.favorite_cnt - 1,
+      favorite_list: [...post.favorite_list.filter((item) => item !== user_id)],
+    };
+    const dbIncrease = {
+      favorite_list: [...post.favorite_list, user_id],
+    };
+    const dbDecrease = {
+      favorite_list: [...post.favorite_list.filter((item) => item !== user_id)],
+    };
+    // const deleteList = _post.favorite_list.filter((item) => item !== user_id);
+    // const addList = _post.favorite_list.push(user_id + "");
+    // console.log(_post);
+    // console.log(deleteList);
+    console.log(post.favorite_list.includes(user_id + ""));
+    if (post.favorite_list.includes(user_id + "")) {
+      // dispatch(editPost(id, decrease));
+      // console.log("삭제");
+      // console.log(user_id);
 
-      const increment = firebase.firestore.FieldValue.increment(-0.5);
+      const increment = firebase.firestore.FieldValue.increment(-1);
       const postDB = firestore.collection("post");
-      const deletedList = favoriteList.filter((item) => item !== user_id);
+
       postDB
         .doc(id)
         .update({ favorite_cnt: increment })
         .then(
           console.log("마이너스 1"),
-          editPost(id, { favorite_cnt: parseInt(_post.favorite_cnt) - 1 })
+          postDB
+            .doc(id)
+            .update({ favorite_list: dbDecrease.favorite_list })
+            .then(
+              dispatch(editPost(id, decrease)),
+              console.log("삭제"),
+              console.log(user_id)
+            )
+            .catch((e) => console.log(e))
         )
-        .catch((error) => console.log(error));
-      postDB
-        .doc(id)
-        .update({ favorite_list: deletedList })
-        .then(
-          console.log("리스트 안에 아이디 사라짐"),
-          editPost(id, { favorite_list: deletedList })
-        );
-      console.log(_post);
+        .catch((e) => console.log(e));
     } else {
-      const increment = firebase.firestore.FieldValue.increment(0.5);
+      const increment = firebase.firestore.FieldValue.increment(1);
       const postDB = firestore.collection("post");
-      favoriteList.push(user_id);
+
       postDB
         .doc(id)
         .update({ favorite_cnt: increment })
         .then(
           console.log("플러스 1"),
-          dispatch(
-            editPost(id, { favorite_cnt: parseInt(_post.favorite_cnt) + 1 })
-          )
+          postDB
+            .doc(id)
+            .update({ favorite_list: dbIncrease.favorite_list })
+            .then(
+              dispatch(editPost(id, increase)),
+              console.log("플러스"),
+              console.log(user_id)
+            )
+            .catch((e) => console.log(e))
         )
-        .catch((error) => console.log(error));
+        .catch((e) => console.log(e));
 
-      postDB
-        .doc(id)
-        .update({ favorite_list: favoriteList })
-        .then(
-          console.log("리스트 안에 아이디 추가됨", favoriteList),
-          editPost(id, { favorite_list: favoriteList })
-        );
+      // dispatch(editPost(id, increase));
+      // console.log(user_id);
+      // console.log("추가");
+      // dispatch(
+      //   editPost(id, {
+      //     favorite_cnt: parseInt(_post.favorite_cnt) + 1,
+      //     favorite_list: [...addList],
+      //   })
+      // );
+      // console.log(_post);
+      // const increment = firebase.firestore.FieldValue.increment(0.5);
+      // const postDB = firestore.collection("post");
+      // favoriteList.push(user_id);
+      // postDB
+      //   .doc(id)
+      //   .update({ favorite_cnt: increment })
+      //   .then(
+      //     console.log("플러스 1"),
+      //     dispatch(
+      //       editPost(id, { favorite_cnt: parseInt(_post.favorite_cnt) + 1 })
+      //     )
+      //   )
+      //   .catch((error) => console.log(error));
+      // postDB
+      //   .doc(id)
+      //   .update({ favorite_list: favoriteList })
+      //   .then(
+      //     console.log("리스트 안에 아이디 추가됨", favoriteList),
+      //     editPost(id, { favorite_list: favoriteList })
+      //   );
     }
-    console.log(_post);
 
     // if (_image === _post.image_url) {
     //   postDB
