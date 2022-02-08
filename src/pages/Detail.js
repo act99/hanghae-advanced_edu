@@ -17,11 +17,12 @@ const Detail = () => {
   const post_data = post_list[post_idx];
   const user_info = useSelector((state) => state.user.user);
   const [post, setPost] = React.useState(post_data ? post_data : null);
+  const comment_info = useSelector((state) => state.comment.list[id]);
 
   const is_login = useSelector((state) => state.user.user);
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
-  console.log(post);
+  console.log(comment_info);
   React.useEffect(() => {
     if (post) {
       return;

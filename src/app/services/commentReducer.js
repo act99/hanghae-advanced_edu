@@ -46,11 +46,15 @@ const addCommentFB = (post_id, contents) => {
       const increment = firebase.firestore.FieldValue.increment(1);
       comment = { ...comment, id: doc.id };
       // firebase increment 를 통해 1개씩 수 추가
+      console.log(post);
+      const count = post.comment_cnt;
+      console.log(count);
       postDB
         .doc(post_id)
         .update({ comment_cnt: increment })
         .then((_post) => {
           dispatch(addComment(post_id, comment));
+          // dispatch(postActions.editPost( post_id, {...post, favorite_cnt:  }))
           // firebase 는 업데이트 됐고, 이젠 state 를 바꾸어주어야할 때
           console.log(comment);
           if (post) {

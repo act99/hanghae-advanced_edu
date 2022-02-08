@@ -26,8 +26,10 @@ const StyledRating = styled(Rating)({
 export default function Favorite(props) {
   const dispatch = useDispatch();
   const user_info = useSelector((state) => state.user.user);
-
+  // console.log(user_info.uid);
+  // console.log(props.id);
   const onClick = () => {
+    console.log(props.id);
     dispatch(postActions.favoriteFB(props.id, user_info.uid));
   };
 
@@ -35,19 +37,17 @@ export default function Favorite(props) {
     alert("로그인 후 이용해주세요");
   };
   React.useEffect(() => {
-    // dispatch(postActions.getPostFB());
+    dispatch(postActions.getPostFB());
   }, []);
 
   return (
     <>
       {user_info ? (
-        <>
-          <StyledCheck
-            icon={<FavoriteBorderIcon />}
-            checkedIcon={<FavoriteIcon />}
-            onChange={onClick}
-          />
-        </>
+        <StyledCheck
+          icon={<FavoriteBorderIcon />}
+          checkedIcon={<FavoriteIcon />}
+          onChange={onClick}
+        />
       ) : (
         <StyledRating
           disabled

@@ -48,7 +48,7 @@ const Center = (props) => {
         </Grid>
       </Link>
       <RowGrid jc="start">
-        <RowGrid padding="16px" width="150px">
+        <RowGrid padding="16px" width="150px" height="25px">
           <Favorite id={id} />
           <Text bold margin="2px">
             좋아요: {favorite_cnt}개
@@ -56,7 +56,7 @@ const Center = (props) => {
         </RowGrid>
         <RowGrid padding="16px" width="150px">
           <CommentIcon color="secondary" />
-          <Text bold margin="2px">
+          <Text bold margin="2px 8px">
             댓글: {comment_cnt}개
           </Text>
         </RowGrid>

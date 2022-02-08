@@ -99,14 +99,15 @@ const signupFB = (id, pwd, name) => {
           displayName: name,
         })
           .then(() => {
-            dispatch(
-              setUser({
-                user_name: name,
-                id: id,
-                user_profile: "",
-                uid: user.uid,
-              })
-            );
+            // dispatch(
+            //   setUser({
+            //     user_name: name,
+            //     id: id,
+            //     user_profile: "",
+            //     uid: user.uid,
+            //   })
+            // );
+            // alert("회원가입을 축하합니다!");
             history.push("/");
           })
           .catch((error) => {

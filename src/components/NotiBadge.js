@@ -28,8 +28,9 @@ const NotiBadege = (props) => {
 
     onValue(notiDB, (snapshot) => {
       const data = snapshot.val();
-      console.log(data);
-      setIsRead(snapshot.val().read);
+      if (data !== null) {
+        setIsRead(snapshot.val().read);
+      }
     });
   }, [isRead]);
   return (

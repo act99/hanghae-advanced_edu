@@ -117,8 +117,8 @@ const AddCompo = (props) => {
             </>
           ) : layout === "right" ? (
             <>
-              <RowGrid is_flex padding="50px">
-                <Grid>
+              <RowGrid is_flex>
+                <Grid margin="15px 40px">
                   <Text bold size="16px">
                     게시글 내용
                   </Text>
@@ -130,7 +130,7 @@ const AddCompo = (props) => {
                     editValue={contents}
                   />
                 </Grid>
-                <Grid>
+                <Grid margin="15px">
                   <Text bold size="16px">
                     미리보기
                   </Text>
@@ -146,8 +146,8 @@ const AddCompo = (props) => {
             </>
           ) : (
             <>
-              <RowGrid is_flex padding="50px">
-                <Grid>
+              <RowGrid is_flex>
+                <Grid margin="15px 40px">
                   <Text bold size="16px">
                     미리보기
                   </Text>
@@ -159,7 +159,7 @@ const AddCompo = (props) => {
                     }
                   />
                 </Grid>
-                <Grid>
+                <Grid margin="15px">
                   <Text bold size="16px">
                     게시글 내용
                   </Text>
@@ -242,8 +242,8 @@ const AddCompo = (props) => {
           </>
         ) : layout === "right" ? (
           <>
-            <RowGrid is_flex padding="50px">
-              <Grid>
+            <RowGrid is_flex>
+              <Grid margin="15px 40px">
                 <Text bold size="16px">
                   게시글 내용
                 </Text>
@@ -254,7 +254,7 @@ const AddCompo = (props) => {
                   margin="0px"
                 />
               </Grid>
-              <Grid>
+              <Grid margin="15px">
                 <Text bold size="16px">
                   미리보기
                 </Text>
@@ -270,8 +270,8 @@ const AddCompo = (props) => {
           </>
         ) : (
           <>
-            <RowGrid is_flex padding="50px">
-              <Grid>
+            <RowGrid is_flex>
+              <Grid margin="15px 40px">
                 <Text bold size="16px">
                   미리보기
                 </Text>
@@ -283,7 +283,7 @@ const AddCompo = (props) => {
                   }
                 />
               </Grid>
-              <Grid>
+              <Grid margin="15px">
                 <Text bold size="16px">
                   게시글 내용
                 </Text>

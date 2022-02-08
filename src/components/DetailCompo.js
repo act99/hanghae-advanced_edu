@@ -2,11 +2,33 @@ import React from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Grid, Image, Text, Button, RowGrid } from "../elements";
 import Delete from "./Delete";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { actionCreators as postActions } from "../app/services/postReducer";
 
 const DetailCompo = (props) => {
   const history = useHistory();
   const { is_me } = props;
   console.log(props);
+
+  const dispatch = useDispatch();
+  const params = useParams();
+  const id = params.id;
+  const post_list = useSelector((state) => state.post.list);
+  const post_idx = post_list.findIndex((item) => item.id === id);
+  const post_data = post_list[post_idx];
+  const [post, setPost] = React.useState(post_data ? post_data : null);
+  const comment_info = useSelector((state) => state.comment.list[id]);
+
+  console.log(comment_info);
+
+  React.useEffect(() => {
+    if (post) {
+      return;
+    }
+    dispatch(postActions.getOnePostFB(id));
+    setPost(post_data);
+  }, []);
 
   return (
     <Grid>
@@ -40,7 +62,11 @@ const DetailCompo = (props) => {
       </Grid>
 
       <Grid padding="16px">
-        <Text bold>댓글 {props.comment_cnt}개</Text>
+        {comment_info !== undefined || null ? (
+          <Text bold>댓글 {comment_info.length}개</Text>
+        ) : (
+          <Text bold>댓글 {props.comment_cnt}개</Text>
+        )}
       </Grid>
     </Grid>
   );

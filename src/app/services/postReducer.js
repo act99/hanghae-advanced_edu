@@ -179,8 +179,9 @@ const updatePostFB = (id = null, post = {}) => {
 };
 
 // id => postID, post => 수정할 포스트 데이터
-const favoriteFB = (id = null, user_id = null) => {
+const favoriteFB = (id, user_id = null) => {
   return async function (dispatch, getState, { history }) {
+    console.log(id);
     if (!id) {
       alert("게시물 정보가 없어요!");
       console.log("게시물 정보가 없습니다. postReducer 93 번째줄");
@@ -362,10 +363,6 @@ export default handleActions(
     [DELETE_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.post_list;
-        // const new_list = draft.list.filter((item, index) => {
-        //   return parseInt(action.payload.index) !== index;
-        // });
-        // return { list: new_list };
       }),
   },
   initialState
